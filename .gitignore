@@ -1,0 +1,7 @@
+.env
+credentials-file.json
+.DS_Store
+rust/target/
+rust/Cargo.lock
+javascript/node_modules/
+javascript/package-lock.json
