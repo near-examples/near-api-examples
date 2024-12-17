@@ -7,9 +7,9 @@ async fn main() {
     from_filename("../.env").unwrap();
     let account_id_string = std::env::var("ACCOUNT_ID").unwrap();
 
-    let account_id: AccountId = account_id_string.parse().unwrap();
-
     let network = NetworkConfig::testnet();
+
+    let account_id: AccountId = account_id_string.parse().unwrap();
 
     // Create a signer from the encrypted keystore
     let signer = KeystoreSigner::search_for_keys(account_id.clone(), &network)
