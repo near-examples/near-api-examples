@@ -21,8 +21,7 @@ const connectionConfig = {
 };
 const nearConnection = await connect(connectionConfig);
 
-// Create an account object
-const account = await nearConnection.account(accountId); // example-account.testnet
+const account = await nearConnection.account(accountId);
 
 // Send NEAR tokens to another account
 const sendTokensResult = await account.sendMoney(

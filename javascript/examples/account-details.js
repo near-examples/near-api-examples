@@ -5,6 +5,7 @@ const connection = await connect({
   nodeUrl: "https://rpc.testnet.near.org",
 });
 
+// Create an account object
 const account = await connection.account("example-account.testnet");
 
 // Gets the total, staked and available balance in yoctoNEAR
