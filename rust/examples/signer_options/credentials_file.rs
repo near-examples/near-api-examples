@@ -10,7 +10,7 @@ async fn main() {
 
     // Create a signer via the credentials directory
     let credentials_path = std::path::PathBuf::from("../credentials-file.json"); // Path relative to the root directory of the project
-    let signer = Signer::new(Signer::access_keyfile(credentials_path).unwrap()).unwrap();
+    let signer = Signer::new(Signer::access_keyfile(credentials_path).unwrap()).unwrap(); // Create the signer
 
     let network = NetworkConfig::testnet();
 

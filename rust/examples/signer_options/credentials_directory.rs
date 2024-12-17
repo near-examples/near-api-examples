@@ -11,7 +11,7 @@ async fn main() {
     // Create a signer via the credentials directory
     let home_dir = std::env::var("HOME").unwrap();
     let credentials_dir = std::path::Path::new(&home_dir).join(".near-credentials");
-    let credentials_path = credentials_dir.join(format!("testnet/{}.json", account_id_string)); //
+    let credentials_path = credentials_dir.join(format!("testnet/{}.json", account_id_string)); // Path to the credentials file
     let signer = Signer::new(Signer::access_keyfile(credentials_path).unwrap()).unwrap(); // Create the signer
 
     let network = NetworkConfig::testnet();

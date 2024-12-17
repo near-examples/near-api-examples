@@ -9,13 +9,13 @@ async fn main() {
     let private_key_string = std::env::var("PRIVATE_KEY").unwrap();
     let account_id_string = std::env::var("ACCOUNT_ID").unwrap();
 
-    let account_id: AccountId = account_id_string.parse().unwrap();
-
     // Create a signer from a private key string
     let private_key = SecretKey::from_str(&private_key_string).unwrap(); // ed25519::5Fg2...
     let signer = Signer::new(Signer::secret_key(private_key)).unwrap(); // Create the signer
 
     let network = NetworkConfig::testnet();
+
+    let account_id: AccountId = account_id_string.parse().unwrap();
 
     // Test the signer by transferring NEAR
     Tokens::of(account_id.clone()) // example-account.testnet
