@@ -17,7 +17,7 @@ async fn main() {
         .unwrap();
     println!("{:?}", near_balance);
 
-    // Account's state, including its code_hash and storage usage
+    // Account's state, including its code hash and storage usage
     let account_info = my_account.view().fetch_from(&network).await.unwrap();
     println!("{:?}", account_info);
 }

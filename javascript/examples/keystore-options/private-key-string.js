@@ -8,7 +8,7 @@ const accountId = process.env.ACCOUNT_ID;
 
 // Create a keystore and add the key pair via a private key string
 const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(privateKey); // ed25519::5Fg2...
+const keyPair = KeyPair.fromString(privateKey); // ed25519:5Fg2...
 await myKeyStore.setKey("testnet", accountId, keyPair);
 
 // Create a connection to NEAR testnet

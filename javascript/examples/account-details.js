@@ -12,7 +12,7 @@ const account = await connection.account("example-account.testnet");
 const accountBalance = await account.getAccountBalance();
 console.log(accountBalance);
 
-// Account's state, including its code_hash and storage usage
+// Account's state, including its code hash and storage usage
 const accountState = await account.state();
 console.log(accountState);
 
