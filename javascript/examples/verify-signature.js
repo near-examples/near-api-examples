@@ -47,15 +47,6 @@ const serializedTxHash = new Uint8Array(sha256.sha256.array(serializedTx));
 // Get signature
 const signature = keyPair.sign(serializedTxHash);
 
-// Construct signed transaction
-const signedTransaction = new transactions.SignedTransaction({
-  transaction,
-  signature: new transactions.Signature({
-    keyType: transaction.publicKey.keyType,
-    data: signature.signature,
-  }),
-});
-
-// Send transaction
-const sendTransactionResult = await provider.sendTransaction(signedTransaction);
-console.log(sendTransactionResult);
+// Check if signature is valid 
+const isValid = keyPair.verify(serializedTxHash, signature.signature);
+console.log(isValid); // Returns true or false

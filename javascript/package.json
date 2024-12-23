@@ -22,6 +22,7 @@
     "rpc-failover": "node examples/rpc-failover.js",
     "send-tokens": "node examples/send-tokens.js",
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
-    "utils": "node examples/utils.js"
+    "utils": "node examples/utils.js",
+    "verify-signature": "node examples/verify-signature.js"
   }
 }
