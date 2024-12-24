@@ -9,7 +9,7 @@ To run the examples, you need to set up the environment variables. In the root o
 ```.env
 ACCOUNT_ID=near-api-tester.testnet // The account ID to use for the examples
 PRIVATE_KEY=ed25519:5gUStfPd... // The private key for the account
-SEED_PHRASE="goose card december immune flag ... " // The seed phrase for the account
+SEED_PHRASE="goose card december immune flag ..." // The seed phrase for the account
 ```
 
 These can be created using the [NEAR CLI](https://github.com/near/near-cli-rs)
@@ -18,7 +18,7 @@ These can be created using the [NEAR CLI](https://github.com/near/near-cli-rs)
 near account create-account sponsor-by-faucet-service <accountId> autogenerate-new-keypair print-to-terminal network-config testnet create
 ```
 
-For some of the examples you should also set up a file named `credentials-file.json` in the root of the repository. This file needs to contain a `private_key` and `public_key` field with a valid private key and public key for the account in the `.env` file.
+For some of the examples, you should also set up a file named `credentials-file.json` in the root of the repository. This file needs to contain a `private_key` and `public_key` field with a valid private key and public key for the account in the `.env` file.
 
 ```json
 {
@@ -44,7 +44,7 @@ Then run the example you want to run (replace `example-name` with the name of th
 npm run example-name
 ```
 
-Running credentials-directory.js requires the user to have saved there credentials to the legacy key store via the NEAR CLI.
+Running credentials-directory.js requires the user to have saved their credentials to the legacy key store via the NEAR CLI.
 
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
@@ -54,7 +54,7 @@ near account import-account using-private-key <privateKey> network-config testne
 
 The Rust examples are located in the `rust` directory.
 
-Enter the rust directory.
+Enter the Rust directory.
 
 ```bash
 cd rust
@@ -66,7 +66,7 @@ Run the example you want to run (replace `example_name` with the name of the exa
 cargo run --example example_name
 ```
 
-Running keystore.rs and credentials-directory.rs requires the user to have saved there credentials to the keychain and legacy key store, respectively, via the NEAR CLI.
+Running keystore.rs and credentials-directory.rs requires the user to have saved their credentials to the keychain and legacy key store, respectively, via the NEAR CLI.
 
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
