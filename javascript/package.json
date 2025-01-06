@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "borsh": "2.0.0",
     "dotenv": "^16.4.7",
     "js-sha256": "^0.11.0",
     "near-api-js": "^4.0.4",
@@ -23,6 +24,6 @@
     "send-tokens": "node examples/send-tokens.js",
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
     "utils": "node examples/utils.js",
-    "verify-signature": "node examples/verify-signature.js"
+    "verify-signature": "node examples/verify-signature/verify-signature.js"
   }
 }
