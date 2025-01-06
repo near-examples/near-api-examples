@@ -3,58 +3,41 @@ import naj from 'near-api-js';
 import js_sha256 from 'js-sha256';
 
 class Payload {
-    constructor({ message, nonce, recipient }) {
+    constructor({ message, nonce, recipient, callbackUrl }) {
         this.tag = 2147484061;
         this.message = message;
         this.nonce = nonce;
         this.recipient = recipient;
+        if (callbackUrl) { this.callbackUrl = callbackUrl }
     }
 }
 
-const payloadSchema = { struct: { tag: 'u32', message: 'string', nonce: { array: { type: 'u8', len: 32 } }, recipient: 'string' } }
+const payloadSchema = { struct: { tag: 'u32', message: 'string', nonce: { array: { type: 'u8', len: 32 } }, recipient: 'string', callbackUrl: { option: "string" } } }
 
 
-const MESSAGE = "log me in"
-const APP = "http://localhost:3000"
-const CHALLENGE = Buffer.from(Array.from(Array(32).keys()))
 
-async function authenticate({ accountId, publicKey, signature }) {
+async function authenticate({ accountId, publicKey, signature, message, recipient, nonce }) {
     // A user is correctly authenticated if:
     // - The key used to sign belongs to the user and is a Full Access Key
     // - The object signed contains the right message and domain
     const full_key_of_user = await verifyFullKeyBelongsToUser({ accountId, publicKey })
-    const valid_signature = verifySignature({ publicKey, signature })
-    console.log({valid_signature, full_key_of_user});
+    const valid_signature = verifySignature({ publicKey, signature, message, recipient, nonce })
     return valid_signature && full_key_of_user
 }
 
-function verifySignature({ publicKey, signature }) {
+function verifySignature({ publicKey, signature, message, recipient, nonce }) {
     // Reconstruct the expected payload to be signed
-    const payload = new Payload({ message: MESSAGE, recipient: APP, nonce: CHALLENGE});
+    const payload = new Payload({ message, recipient, nonce });
     const serialized = borsh.serialize(payloadSchema, payload);
     const to_sign = Uint8Array.from(js_sha256.sha256.array(serialized))
 
     // Reconstruct the signature from the parameter given in the URL
     let real_signature = Buffer.from(signature, 'base64')
-    console.log({to_sign, real_signature});
+
     // Use the public Key to verify that the private-counterpart signed the message
     const myPK = naj.utils.PublicKey.from(publicKey)
     return myPK.verify(to_sign, real_signature)
 }
-
-// function verifySignature({ publicKey, signature }) {
-//     // Reconstruct the payload that was **actually signed**
-//     const payload = new Payload({ message: MESSAGE, nonce: CHALLENGE, recipient: APP, callbackUrl: cURL });
-//     const borsh_payload = borsh.serialize(payloadSchema, payload);
-//     const to_sign = Uint8Array.from(js_sha256.sha256.array(borsh_payload))
-  
-//     // Reconstruct the signature from the parameter given in the URL
-//     let real_signature = Buffer.from(signature, 'base64')
-  
-//     // Use the public Key to verify that the private-counterpart signed the message
-//     const myPK = naj.utils.PublicKey.from(publicKey)
-//     return myPK.verify(to_sign, real_signature)
-//   }
 
 async function verifyFullKeyBelongsToUser({ publicKey, accountId }) {
     // Call the public RPC asking for all the users' keys
@@ -87,10 +70,4 @@ async function fetch_all_user_keys({ accountId }) {
     return keys
 }
 
-const msg = {
-    "signature": "IfModLa3g3czlyPhkg/LSkTFSy7XCGreStZJTDIO1m3viEnYFLdXfpz1gYUVKYv3W2vwcV77TmGEzc9y0Nz+AA==",
-    "accountId": "maguila.testnet",
-    "publicKey": "ed25519:AtH7GEjv2qmBVoT8qoRhWXizXM5CC12DC6tiqY9iNoRm"
-}
-
-authenticate({ accountId: msg.accountId, publicKey: msg.publicKey, signature: msg.signature }).then(console.log)
+export { authenticate }
