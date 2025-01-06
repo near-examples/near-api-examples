@@ -14,8 +14,6 @@ class Payload {
 
 const payloadSchema = { struct: { tag: 'u32', message: 'string', nonce: { array: { type: 'u8', len: 32 } }, recipient: 'string', callbackUrl: { option: "string" } } }
 
-
-
 async function authenticate({ accountId, publicKey, signature, message, recipient, nonce }) {
     // A user is correctly authenticated if:
     // - The key used to sign belongs to the user and is a Full Access Key
