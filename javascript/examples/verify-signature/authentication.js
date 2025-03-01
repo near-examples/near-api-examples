@@ -1,5 +1,5 @@
 import * as borsh from 'borsh';
-import naj from 'near-api-js';
+import * as naj from 'near-api-js';
 import js_sha256 from 'js-sha256';
 
 class Payload {
