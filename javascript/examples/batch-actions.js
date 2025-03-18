@@ -12,7 +12,7 @@ await myKeyStore.setKey("testnet", accountId, keyPair);
 const connectionConfig = {
   networkId: "testnet",
   keyStore: myKeyStore,
-  nodeUrl: "https://rpc.testnet.near.org",
+  nodeUrl: "https://test.rpc.fastnear.com",
 };
 const nearConnection = await connect(connectionConfig);
 

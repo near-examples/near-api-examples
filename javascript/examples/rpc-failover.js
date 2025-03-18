@@ -20,7 +20,7 @@ const jsonProviders = [
     }, // Retry options
   ),
   new providers.JsonRpcProvider({
-    url: "https://rpc.testnet.near.org",
+    url: "https://test.rpc.fastnear.com",
   }), // Second RPC URL
 ];
 const provider = new providers.FailoverRpcProvider(jsonProviders); // Create a FailoverRpcProvider

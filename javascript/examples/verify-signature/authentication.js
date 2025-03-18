@@ -59,7 +59,7 @@ async function verifyFullKeyBelongsToUser({ publicKey, accountId }) {
 // Aux method
 async function fetch_all_user_keys({ accountId }) {
     const keys = await fetch(
-        "https://rpc.testnet.near.org",
+        "https://test.rpc.fastnear.com",
         {
             method: 'post',
             headers: { 'Content-Type': 'application/json; charset=utf-8' },
