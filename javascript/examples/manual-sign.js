@@ -9,7 +9,7 @@ const accountId = process.env.ACCOUNT_ID;
 const keyPair = KeyPair.fromString(privateKey);
 
 const provider = new providers.JsonRpcProvider({
-  url: "https://rpc.testnet.near.org",
+  url: "https://test.rpc.fastnear.com",
 });
 
 // Get the nonce of the key

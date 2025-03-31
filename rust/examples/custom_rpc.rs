@@ -5,7 +5,7 @@ async fn main() {
     // Connecting to NEAR
     let network = NetworkConfig {
         network_name: "testnet".to_string(),
-        rpc_url: "https://rpc.testnet.near.org".parse().unwrap(),
+        rpc_url: "https://test.rpc.fastnear.com".parse().unwrap(),
         rpc_api_key: None,
         linkdrop_account_id: Some("testnet".parse().unwrap()),
         near_social_db_contract_account_id: Some("v1.social08.testnet".parse().unwrap()),

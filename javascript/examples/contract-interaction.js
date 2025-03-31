@@ -13,7 +13,7 @@ await myKeyStore.setKey("testnet", accountId, keyPair);
 const connectionConfig = {
   networkId: "testnet",
   keyStore: myKeyStore,
-  nodeUrl: "https://rpc.testnet.near.org",
+  nodeUrl: "https://test.rpc.fastnear.com",
 };
 const nearConnection = await connect(connectionConfig);
 
@@ -27,7 +27,7 @@ async function viewContract({
   finality = "optimistic",
 }) {
   // Set up a new provider
-  const url = `https://rpc.testnet.near.org`;
+  const url = `https://test.rpc.fastnear.com`;
   const provider = new providers.JsonRpcProvider({ url });
 
   // Convert the arguments to base64
@@ -69,7 +69,7 @@ const contractCallResult = await account.functionCall({
     text: "Hello, world!",
   }, // Arguments for the method
   gas: 100000000000000, // Optional: gas limit
-  deposit: 0, // Optional: deposit in yoctoNEAR
+  attachedDeposit: 0, // Optional: deposit in yoctoNEAR
 });
 console.log(contractCallResult);
 

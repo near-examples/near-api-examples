@@ -2,7 +2,7 @@ import { connect } from "near-api-js";
 
 const connection = await connect({
   networkId: "testnet",
-  nodeUrl: "https://rpc.testnet.near.org",
+  nodeUrl: "https://test.rpc.fastnear.com",
 });
 
 // Create an account object
