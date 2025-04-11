@@ -1,5 +1,5 @@
 import * as borsh from 'borsh';
-import * as naj from 'near-api-js';
+import { utils } from 'near-api-js';
 import js_sha256 from 'js-sha256';
 
 class Payload {
@@ -33,7 +33,7 @@ function verifySignature({ publicKey, signature, message, recipient, nonce }) {
     let real_signature = Buffer.from(signature, 'base64')
 
     // Use the public Key to verify that the private-counterpart signed the message
-    const myPK = naj.utils.PublicKey.from(publicKey)
+    const myPK = utils.PublicKey.from(publicKey)
     return myPK.verify(to_sign, real_signature)
 }
 

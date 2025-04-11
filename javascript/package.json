@@ -25,5 +25,10 @@
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
     "utils": "node examples/utils.js",
     "verify-signature": "node examples/verify-signature/verify-signature.js"
+  },
+  "pnpm": {
+    "overrides": {
+      "near-api-js": "link:../../near-api-js/packages/near-api-js"
+    }
   }
 }
