@@ -21,7 +21,7 @@ const provider = new providers.JsonRpcProvider({
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Test the signer by transferring NEAR
-const sendTokensResult = await account.sendMoney(
+const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
   utils.format.parseNearAmount("1")
 );
