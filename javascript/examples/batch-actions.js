@@ -1,4 +1,10 @@
-import { Account, providers, KeyPairSigner, transactions, utils } from "near-api-js";
+import {
+  Account,
+  providers,
+  KeyPairSigner,
+  transactions,
+  utils,
+} from "near-api-js";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });

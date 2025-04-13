@@ -32,7 +32,11 @@ await account.createTopLevelAccount(
 const signerToDelete = new KeyPairSigner(newKeyPair);
 
 // Create an account object for the new account with corresponding signer
-const accountToDelete = new Account(accountToDeleteId, provider, signerToDelete);
+const accountToDelete = new Account(
+  accountToDeleteId,
+  provider,
+  signerToDelete
+);
 
 // Delete the account with account ID of the account object
 // specifying the beneficiary account ID

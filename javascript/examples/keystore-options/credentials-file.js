@@ -22,6 +22,6 @@ const account = new Account(accountId, provider, signer);
 // Test the signer by transferring NEAR
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
-  utils.format.parseNearAmount("1"),
+  utils.format.parseNearAmount("1")
 );
 console.log(sendTokensResult);
