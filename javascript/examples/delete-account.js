@@ -25,7 +25,7 @@ const newPublicKey = newKeyPair.getPublicKey().toString();
 await account.createTopLevelAccount(
   accountToDeleteId,
   newPublicKey,
-  BigInt(utils.format.parseNearAmount("0.1"))
+  utils.format.parseNearAmount("0.1")
 );
 
 // Create a signer from a key pair that was added to new account

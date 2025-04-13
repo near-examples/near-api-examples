@@ -38,8 +38,8 @@ const contractCallResult = await account.callFunction(
   {
     text: "Hello, world!",
   },
-  BigInt(0),
-  BigInt(100_000_000_000_000)
+  0,
+  "100000000000000"
 );
 console.log(contractCallResult);
 

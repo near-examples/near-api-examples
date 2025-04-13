@@ -41,7 +41,7 @@ const addFunctionKeyResult = await account.addFunctionAccessKey(
   newFunctionPublicKey, // The new public key ed25519:2ASWc...
   "example-contract.testnet", // Contract this key is allowed to call (optional)
   ["example_method"], // Methods this key is allowed to call (optional)
-  BigInt(utils.format.parseNearAmount("0.25")) // Gas allowance key can use to call methods (optional)
+  utils.format.parseNearAmount("0.25") // Gas allowance key can use to call methods (optional)
 );
 console.log(addFunctionKeyResult);
 

@@ -29,7 +29,7 @@ console.log("Public key", newPublicKey);
 const createAccountResult = await account.createTopLevelAccount(
   newAccountId,
   newPublicKey, // ed25519:2ASWc...
-  BigInt(utils.format.parseNearAmount("0.1")) // Initial balance for new account in yoctoNEAR
+  utils.format.parseNearAmount("0.1") // Initial balance for new account in yoctoNEAR
 );
 console.log(createAccountResult);
 
@@ -46,6 +46,6 @@ console.log("Public key", newSubPublicKey);
 const createSubAccountResult = await account.createSubAccount(
   newSubAccountIdPrefix,
   newSubPublicKey, // ed25519:2ASWc...
-  BigInt(utils.format.parseNearAmount("0.1")) // Initial balance for new account in yoctoNEAR
+  utils.format.parseNearAmount("0.1") // Initial balance for new account in yoctoNEAR
 );
 console.log(createSubAccountResult);

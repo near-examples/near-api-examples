@@ -24,9 +24,7 @@ const nonce = ++accessKey.nonce;
 const recentBlockHash = utils.serialize.base_decode(accessKey.block_hash);
 
 // Construct actions
-const actions = [
-  transactions.transfer(BigInt(utils.format.parseNearAmount("1"))),
-];
+const actions = [transactions.transfer(utils.format.parseNearAmount("1"))];
 
 // Construct transaction
 const transaction = transactions.createTransaction(

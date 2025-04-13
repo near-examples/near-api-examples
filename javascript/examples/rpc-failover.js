@@ -28,6 +28,6 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 // Test the signer with transferring 1 NEAR
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
-  BigInt(utils.format.parseNearAmount("1"))
+  utils.format.parseNearAmount("1")
 );
 console.log(sendTokensResult);

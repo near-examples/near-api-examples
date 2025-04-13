@@ -22,16 +22,16 @@ const tx1 = account.callFunction(
   "guestbook.near-examples.testnet",
   "add_message",
   { text: "Hello, world!" },
-  BigInt(0),
-  BigInt(100_000_000_000_000)
+  0,
+  "100000000000000"
 );
 
 const tx2 = account.callFunction(
   "counter.near-examples.testnet",
   "increment",
   {},
-  BigInt(0),
-  BigInt(100_000_000_000_000)
+  0,
+  "100000000000000"
 );
 
 // Send the transactions simultaneously

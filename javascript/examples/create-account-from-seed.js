@@ -29,6 +29,6 @@ console.log("Public key", publicKey);
 const createAccountResult = await account.createTopLevelAccount(
   newAccountId,
   publicKey,
-  BigInt(utils.format.parseNearAmount("0.1"))
+  utils.format.parseNearAmount("0.1")
 );
 console.log(createAccountResult);

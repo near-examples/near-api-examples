@@ -22,6 +22,6 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 // Send NEAR tokens to another account
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet", // Receiver account
-  BigInt(utils.format.parseNearAmount("1")) // Amount being sent in yoctoNEAR
+  utils.format.parseNearAmount("1") // Amount being sent in yoctoNEAR
 );
 console.log(sendTokensResult);

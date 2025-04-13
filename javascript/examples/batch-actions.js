@@ -21,10 +21,10 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 const callAction = transactions.functionCall(
   "increment", // Method name
   {}, // Arguments
-  BigInt(30_000_000_000_000), // Gas
-  BigInt(0) // Deposit
+  "30000000000000", // Gas
+  0 // Deposit
 );
-const transferAction = transactions.transfer(BigInt(utils.format.parseNearAmount("1")));
+const transferAction = transactions.transfer(utils.format.parseNearAmount("1"));
 
 // Send the batch of actions
 const batchActionsResult = await account.signAndSendTransaction({
