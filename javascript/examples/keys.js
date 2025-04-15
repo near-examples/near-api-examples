@@ -17,8 +17,13 @@ const provider = new providers.JsonRpcProvider({
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Get all access keys for the account
+// Option 1 - via Account, or PublicAccount
 const accessKeys = await account.getAccessKeyList();
 console.log(accessKeys);
+
+// Option 2 - via Provider
+const accessKeys2 = await provider.viewAccessKeyList(accountId);
+console.log(accessKeys2);
 
 // Add full access key
 // Generate a new key pair

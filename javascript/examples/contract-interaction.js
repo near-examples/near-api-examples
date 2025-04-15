@@ -12,12 +12,21 @@ const provider = new providers.JsonRpcProvider({
 });
 
 // Use the view call function
-const viewCallData = await provider.callContractViewFunction(
+// Option 1 - via PublicAccount
+const viewCallData = await account.callReadFunction(
   "guestbook.near-examples.testnet",
   "total_messages",
   {}
 );
 console.log(viewCallData);
+
+// Option 2 - via Provider
+const viewCallData2 = await provider.callContractViewFunction(
+  "guestbook.near-examples.testnet",
+  "total_messages",
+  {}
+);
+console.log(viewCallData2);
 
 // If args are required, they can be passed in like this:
 // args: {
