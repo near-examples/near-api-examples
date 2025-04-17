@@ -1,4 +1,8 @@
-import { connect, keyStores, KeyPair, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { parseNearAmount } from "@near-js/utils";
+
 import { generateSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
 
@@ -6,18 +10,16 @@ dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
 
-const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(privateKey);
-await myKeyStore.setKey("testnet", accountId, keyPair);
+// Create a signer from a private key string
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
-const connectionConfig = {
-  networkId: "testnet",
-  keyStore: myKeyStore,
-  nodeUrl: "https://test.rpc.fastnear.com",
-};
-const nearConnection = await connect(connectionConfig);
+// Create a connection to testnet RPC
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
+});
 
-const account = await nearConnection.account(accountId);
+// Create an account object
+const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Create a .testnet account
 // Generate a new account ID based on the current timestamp
@@ -28,13 +30,9 @@ console.log("Seed phrase", seedPhrase);
 console.log("Private key", secretKey);
 console.log("Public key", publicKey);
 
-const createAccountResult = await account.functionCall({
-  contractId: "testnet",
-  methodName: "create_account",
-  args: {
-    new_account_id: newAccountId, // example-account.testnet
-    new_public_key: publicKey, // ed25519:2ASWc...
-  },
-  attachedDeposit: utils.format.parseNearAmount("0.1"), // Initial balance for new account in yoctoNEAR
-});
+const createAccountResult = await account.createTopLevelAccount(
+  newAccountId,
+  publicKey,
+  parseNearAmount("0.1")
+);
 console.log(createAccountResult);

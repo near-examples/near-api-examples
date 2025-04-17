@@ -1,31 +1,29 @@
-import * as nearAPI from "near-api-js";
-import dotenv from "dotenv";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { parseNearAmount } from "@near-js/utils";
 
-const { connect, keyStores, KeyPair, utils } = nearAPI;
+import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config({ path: "../.env" }); // Path relative to the working directory
 const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
 
-// Create a keystore and add the key pair via the private key string
-const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(privateKey);
-await myKeyStore.setKey("testnet", accountId, keyPair);
+// Create a signer from a private key string
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
-// Create a connection to the NEAR testnet
-const connectionConfig = {
-  networkId: "testnet",
-  keyStore: myKeyStore,
-  nodeUrl: "https://test.rpc.fastnear.com",
-};
-const nearConnection = await connect(connectionConfig);
+// Create a connection to testnet RPC
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
+});
 
-const account = await nearConnection.account(accountId);
+// Create an account object
+const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Send NEAR tokens to another account
-const sendTokensResult = await account.sendMoney(
+const sendTokensResult = await account.transfer(
   "receiver-account.testnet", // Receiver account
-  utils.format.parseNearAmount("1"), // Amount being sent in yoctoNEAR
+  parseNearAmount("0.1") // Amount being sent in yoctoNEAR
 );
 console.log(sendTokensResult);
