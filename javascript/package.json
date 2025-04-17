@@ -1,10 +1,16 @@
 {
   "type": "module",
   "dependencies": {
+    "@near-js/accounts": "link:../../near-api-js/packages/accounts",
+    "@near-js/crypto": "link:../../near-api-js/packages/crypto",
+    "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
+    "@near-js/providers": "link:../../near-api-js/packages/providers",
+    "@near-js/signers": "link:../../near-api-js/packages/signers",
+    "@near-js/transactions": "link:../../near-api-js/packages/transactions",
+    "@near-js/utils": "link:../../near-api-js/packages/utils",
     "borsh": "2.0.0",
     "dotenv": "^16.4.7",
     "js-sha256": "^0.11.0",
-    "near-api-js": "^4.0.4",
     "near-seed-phrase": "^0.2.1"
   },
   "scripts": {
@@ -28,7 +34,13 @@
   },
   "pnpm": {
     "overrides": {
-      "near-api-js": "link:../../near-api-js/packages/near-api-js"
+      "@near-js/accounts": "link:../../near-api-js/packages/accounts",
+      "@near-js/signers": "link:../../near-api-js/packages/signers",
+      "@near-js/providers": "link:../../near-api-js/packages/providers",
+      "@near-js/utils": "link:../../near-api-js/packages/utils",
+      "@near-js/transactions": "link:../../near-api-js/packages/transactions",
+      "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
+      "@near-js/crypto": "link:../../near-api-js/packages/crypto"
     }
   }
 }

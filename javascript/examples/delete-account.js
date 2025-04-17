@@ -1,4 +1,9 @@
-import { Account, providers, KeyPairSigner, KeyPair, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { KeyPair } from "@near-js/crypto";
+import { parseNearAmount } from "@near-js/utils";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
@@ -9,7 +14,7 @@ const beneficiaryAccountId = process.env.ACCOUNT_ID;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
@@ -25,7 +30,7 @@ const newPublicKey = newKeyPair.getPublicKey().toString();
 await account.createTopLevelAccount(
   accountToDeleteId,
   newPublicKey,
-  utils.format.parseNearAmount("0.1")
+  parseNearAmount("0.1")
 );
 
 // Create a signer from a key pair that was added to new account

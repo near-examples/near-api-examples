@@ -1,4 +1,8 @@
-import { Account, KeyPairSigner, utils, providers } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider, FailoverRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { parseNearAmount } from "@near-js/utils";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
@@ -10,8 +14,8 @@ const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Set up a new FailoverRpcProvider with two JSON RPC providers
 const jsonProviders = [
-  new providers.JsonRpcProvider({ url: "https://incorrect-rpc-url.com" }), // Incorrect RPC URL
-  new providers.JsonRpcProvider(
+  new JsonRpcProvider({ url: "https://incorrect-rpc-url.com" }), // Incorrect RPC URL
+  new JsonRpcProvider(
     { url: "https://test.rpc.fastnear.com" }, // RPC URL
     {
       retries: 3, // Number of retries before giving up on a request
@@ -20,7 +24,7 @@ const jsonProviders = [
     } // Retry options
   ),
 ];
-const provider = new providers.FailoverRpcProvider(jsonProviders); // Create a FailoverRpcProvider
+const provider = new FailoverRpcProvider(jsonProviders); // Create a FailoverRpcProvider
 
 // Create an account object
 const account = new Account(accountId, provider, signer); // example-account.testnet
@@ -28,6 +32,6 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 // Test the signer with transferring 1 NEAR
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
-  utils.format.parseNearAmount("1")
+  parseNearAmount("0.1")
 );
 console.log(sendTokensResult);

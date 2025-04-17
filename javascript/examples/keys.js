@@ -1,4 +1,9 @@
-import { Account, providers, KeyPairSigner, KeyPair, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { KeyPair } from "@near-js/crypto";
+import { parseNearAmount } from "@near-js/utils";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
@@ -9,7 +14,7 @@ const accountId = process.env.ACCOUNT_ID;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
@@ -46,7 +51,7 @@ const addFunctionKeyResult = await account.addFunctionAccessKey(
   newFunctionPublicKey, // The new public key ed25519:2ASWc...
   "example-contract.testnet", // Contract this key is allowed to call (optional)
   ["example_method"], // Methods this key is allowed to call (optional)
-  utils.format.parseNearAmount("0.25") // Gas allowance key can use to call methods (optional)
+  parseNearAmount("0.25") // Gas allowance key can use to call methods (optional)
 );
 console.log(addFunctionKeyResult);
 

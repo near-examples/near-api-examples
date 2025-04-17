@@ -1,7 +1,8 @@
-import { PublicAccount, providers } from "near-api-js";
+import { PublicAccount } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 

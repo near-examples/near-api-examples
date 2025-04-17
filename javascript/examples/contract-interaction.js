@@ -1,32 +1,27 @@
-import { Account, providers, KeyPairSigner } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+
 import dotenv from "dotenv";
 import fs from "fs";
 
 dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
+const contractId = "guestbook.near-examples.testnet";
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
 // Use the view call function
-// Option 1 - via PublicAccount
-const viewCallData = await account.callReadFunction(
-  "guestbook.near-examples.testnet",
+const viewCallData = await provider.callContractViewFunction(
+  contractId,
   "total_messages",
   {}
 );
 console.log(viewCallData);
-
-// Option 2 - via Provider
-const viewCallData2 = await provider.callContractViewFunction(
-  "guestbook.near-examples.testnet",
-  "total_messages",
-  {}
-);
-console.log(viewCallData2);
 
 // If args are required, they can be passed in like this:
 // args: {
@@ -42,7 +37,7 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 
 // Make a function call to a contract
 const contractCallResult = await account.callFunction(
-  "guestbook.near-examples.testnet",
+  contractId,
   "add_message",
   {
     text: "Hello, world!",

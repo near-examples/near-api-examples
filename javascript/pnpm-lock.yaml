@@ -5,12 +5,39 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  near-api-js: link:../../near-api-js/packages/near-api-js
+  '@near-js/accounts': link:../../near-api-js/packages/accounts
+  '@near-js/signers': link:../../near-api-js/packages/signers
+  '@near-js/providers': link:../../near-api-js/packages/providers
+  '@near-js/utils': link:../../near-api-js/packages/utils
+  '@near-js/transactions': link:../../near-api-js/packages/transactions
+  '@near-js/keystores-node': link:../../near-api-js/packages/keystores-node
+  '@near-js/crypto': link:../../near-api-js/packages/crypto
 
 importers:
 
   .:
     dependencies:
+      '@near-js/accounts':
+        specifier: link:../../near-api-js/packages/accounts
+        version: link:../../near-api-js/packages/accounts
+      '@near-js/crypto':
+        specifier: link:../../near-api-js/packages/crypto
+        version: link:../../near-api-js/packages/crypto
+      '@near-js/keystores-node':
+        specifier: link:../../near-api-js/packages/keystores-node
+        version: link:../../near-api-js/packages/keystores-node
+      '@near-js/providers':
+        specifier: link:../../near-api-js/packages/providers
+        version: link:../../near-api-js/packages/providers
+      '@near-js/signers':
+        specifier: link:../../near-api-js/packages/signers
+        version: link:../../near-api-js/packages/signers
+      '@near-js/transactions':
+        specifier: link:../../near-api-js/packages/transactions
+        version: link:../../near-api-js/packages/transactions
+      '@near-js/utils':
+        specifier: link:../../near-api-js/packages/utils
+        version: link:../../near-api-js/packages/utils
       borsh:
         specifier: 2.0.0
         version: 2.0.0
@@ -20,9 +47,6 @@ importers:
       js-sha256:
         specifier: ^0.11.0
         version: 0.11.0
-      near-api-js:
-        specifier: link:../../near-api-js/packages/near-api-js
-        version: link:../../near-api-js/packages/near-api-js
       near-seed-phrase:
         specifier: ^0.2.1
         version: 0.2.1

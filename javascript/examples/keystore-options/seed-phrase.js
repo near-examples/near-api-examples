@@ -1,4 +1,7 @@
-import { utils, providers, Account, KeyPairSigner } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { parseNearAmount } from "@near-js/utils";
 import { parseSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
 
@@ -13,7 +16,7 @@ const { secretKey } = parseSeedPhrase(seedPhrase); // "royal success river ..."
 const signer = KeyPairSigner.fromSecretKey(secretKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
@@ -23,6 +26,6 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 // Test the signer by transferring NEAR
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
-  utils.format.parseNearAmount("1")
+  parseNearAmount("0.1")
 );
 console.log(sendTokensResult);

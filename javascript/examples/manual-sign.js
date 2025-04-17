@@ -1,4 +1,8 @@
-import { KeyPairSigner, transactions, providers, utils } from "near-api-js";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { actionCreators, createTransaction } from "@near-js/transactions";
+import { parseNearAmount, baseDecode } from "@near-js/utils";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
@@ -9,7 +13,7 @@ const accountId = process.env.ACCOUNT_ID;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
-const provider = new providers.JsonRpcProvider({
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
@@ -21,13 +25,13 @@ const accessKey = await provider.viewAccessKey(accountId, signerPublicKey);
 const nonce = ++accessKey.nonce;
 
 // Get a recent block hash
-const recentBlockHash = utils.serialize.base_decode(accessKey.block_hash);
+const recentBlockHash = baseDecode(accessKey.block_hash);
 
 // Construct actions
-const actions = [transactions.transfer(utils.format.parseNearAmount("1"))];
+const actions = [actionCreators.transfer(parseNearAmount("0.1"))];
 
 // Construct transaction
-const transaction = transactions.createTransaction(
+const transaction = createTransaction(
   accountId,
   signerPublicKey,
   "receiver-account.testnet",
