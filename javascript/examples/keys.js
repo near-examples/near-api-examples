@@ -22,7 +22,7 @@ const provider = new JsonRpcProvider({
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Get all access keys for the account
-// Option 1 - via Account, or PublicAccount
+// Option 1 - via Account
 const accessKeys = await account.getAccessKeyList();
 console.log(accessKeys);
 
