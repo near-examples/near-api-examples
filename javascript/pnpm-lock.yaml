@@ -12,6 +12,7 @@ overrides:
   '@near-js/transactions': link:../../near-api-js/packages/transactions
   '@near-js/keystores-node': link:../../near-api-js/packages/keystores-node
   '@near-js/crypto': link:../../near-api-js/packages/crypto
+  '@near-js/tokens': link:../../near-api-js/packages/tokens
 
 importers:
 
@@ -32,6 +33,9 @@ importers:
       '@near-js/signers':
         specifier: link:../../near-api-js/packages/signers
         version: link:../../near-api-js/packages/signers
+      '@near-js/tokens':
+        specifier: link:../../near-api-js/packages/tokens
+        version: link:../../near-api-js/packages/tokens
       '@near-js/transactions':
         specifier: link:../../near-api-js/packages/transactions
         version: link:../../near-api-js/packages/transactions
