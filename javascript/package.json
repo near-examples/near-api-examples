@@ -6,6 +6,7 @@
     "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
     "@near-js/providers": "link:../../near-api-js/packages/providers",
     "@near-js/signers": "link:../../near-api-js/packages/signers",
+    "@near-js/tokens": "link:../../near-api-js/packages/tokens",
     "@near-js/transactions": "link:../../near-api-js/packages/transactions",
     "@near-js/utils": "link:../../near-api-js/packages/utils",
     "borsh": "2.0.0",
@@ -40,7 +41,8 @@
       "@near-js/utils": "link:../../near-api-js/packages/utils",
       "@near-js/transactions": "link:../../near-api-js/packages/transactions",
       "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
-      "@near-js/crypto": "link:../../near-api-js/packages/crypto"
+      "@near-js/crypto": "link:../../near-api-js/packages/crypto",
+      "@near-js/tokens": "link:../../near-api-js/packages/tokens"
     }
   }
 }
