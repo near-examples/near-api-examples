@@ -3,6 +3,7 @@ import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
 
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config({ path: "../.env" });
 
@@ -10,17 +11,6 @@ dotenv.config({ path: "../.env" });
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
-
-const contractId = "guestbook.near-examples.testnet";
-
-// Make a read-only function call
-const totalMessages = await provider.callFunction(
-  contractId,
-  "total_messages",
-  {}
-);
-
-console.log(totalMessages);
 
 // Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;
@@ -30,11 +20,9 @@ const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
-// Make a function call that modifies state
-const result = await account.callFunction(
-  contractId,
-  "add_message",
-  { text: "Hello, world!" }
+// Deploy a contract to the account
+const result = await account.deployContract(
+  fs.readFileSync("../contracts/contract.wasm") // Path of contract WASM relative to the working directory
 );
 
 console.log(result);

@@ -6,16 +6,17 @@ import { parseNearAmount, baseDecode } from "@near-js/utils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
 
-// Create a signer from a private key string
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
+
+// Create a signer from a private key string
+const privateKey = process.env.PRIVATE_KEY;
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 const signerPublicKey = await signer.getPublicKey();
 

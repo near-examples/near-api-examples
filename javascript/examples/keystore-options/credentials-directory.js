@@ -10,9 +10,8 @@ import path from "path";
 
 // Load environment variables
 dotenv.config({ path: "../.env" });
-const accountId = process.env.ACCOUNT_ID;
 
-// Create a keystore and add the key pair via credentials directory
+// Create a keystore that stores keys in the `~/.near-credentials`
 const credentialsDirectory = ".near-credentials";
 const credentialsPath = path.join(homedir(), credentialsDirectory);
 const myKeyStore = new UnencryptedFileSystemKeyStore(credentialsPath);
@@ -22,10 +21,12 @@ const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
+// Get the key from the keystore
 const keyPair = await myKeyStore.getKey("testnet", accountId);
-
 const signer = new KeyPairSigner(keyPair);
 
+// Instantiate the account
+const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer);
 
 // Test the signer by transferring NEAR
@@ -33,4 +34,5 @@ const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
   parseNearAmount("0.1")
 );
+
 console.log(sendTokensResult);

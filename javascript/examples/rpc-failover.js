@@ -6,10 +6,9 @@ import { parseNearAmount } from "@near-js/utils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
 
 // Create a signer from a private key string
+const privateKey = process.env.PRIVATE_KEY;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Set up a new FailoverRpcProvider with two JSON RPC providers
@@ -24,9 +23,11 @@ const jsonProviders = [
     } // Retry options
   ),
 ];
+
 const provider = new FailoverRpcProvider(jsonProviders); // Create a FailoverRpcProvider
 
 // Create an account object
+const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Test the signer with transferring 1 NEAR

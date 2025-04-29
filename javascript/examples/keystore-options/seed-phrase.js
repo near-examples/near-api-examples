@@ -7,13 +7,13 @@ import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config({ path: "../.env" });
-const seedPhrase = process.env.SEED_PHRASE;
-const accountId = process.env.ACCOUNT_ID;
 
 // Create a keystore and add the key pair via a seed phrase
-const { secretKey } = parseSeedPhrase(seedPhrase); // "royal success river ..."
+const seedPhrase = process.env.SEED_PHRASE; // "royal success river ..."
+const { secretKey } = parseSeedPhrase(seedPhrase);
+
 // Create a signer from a private key string
-const signer = KeyPairSigner.fromSecretKey(secretKey); // ed25519:5Fg2...
+const signer = KeyPairSigner.fromSecretKey(secretKey);
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -21,11 +21,13 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const account = new Account(accountId, provider, signer); // example-account.testnet
+const accountId = process.env.ACCOUNT_ID;
+const account = new Account(accountId, provider, signer);
 
 // Test the signer by transferring NEAR
 const sendTokensResult = await account.transfer(
   "receiver-account.testnet",
   parseNearAmount("0.1")
 );
+
 console.log(sendTokensResult);

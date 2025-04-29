@@ -1,6 +1,8 @@
 import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
+import { KeyPair } from "@near-js/crypto";
+import { parseNearAmount } from "@near-js/utils";
 
 import dotenv from "dotenv";
 
@@ -11,17 +13,6 @@ const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-const contractId = "guestbook.near-examples.testnet";
-
-// Make a read-only function call
-const totalMessages = await provider.callFunction(
-  contractId,
-  "total_messages",
-  {}
-);
-
-console.log(totalMessages);
-
 // Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
@@ -30,11 +21,17 @@ const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
-// Make a function call that modifies state
-const result = await account.callFunction(
-  contractId,
-  "add_message",
-  { text: "Hello, world!" }
+// Generate a new key pair
+const keyPair = KeyPair.fromRandom("ed25519");
+const publicKey = keyPair.getPublicKey().toString();
+
+const prefix = Date.now().toString();
+
+await account.createSubAccount(
+  prefix,    // prefix for the sub account (e.g. sub.near.testnet)
+  publicKey, // ed25519:2ASWc...
+  parseNearAmount("0.1") // Initial balance for new account in yoctoNEAR
 );
 
-console.log(result);
+console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`)
+console.log(`Seed phrase: ${keyToSeedPhrase(keyPair)}`)

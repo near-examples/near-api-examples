@@ -7,32 +7,22 @@ import { generateSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
-
-// Create a signer from a private key string
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-// Create an account object
-const account = new Account(accountId, provider, signer); // example-account.testnet
+// Instantiate the account that will create the new account
+const signer = KeyPairSigner.fromSecretKey(process.env.PRIVATE_KEY);
+const account = new Account(process.env.ACCOUNT_ID, provider, signer);
 
-// Create a .testnet account
-// Generate a new account ID based on the current timestamp
-const newAccountId = Date.now() + ".testnet";
-// Generate a new seed phrase
+// Generate a new key
 const { seedPhrase, publicKey, secretKey } = generateSeedPhrase();
-console.log("Seed phrase", seedPhrase);
-console.log("Private key", secretKey);
-console.log("Public key", publicKey);
+console.log(`Created key ${secretKey} with seed phrase ${seedPhrase}`);
 
-const createAccountResult = await account.createTopLevelAccount(
-  newAccountId,
+await account.createTopLevelAccount(
+  `acc-${Date.now()}.testnet`,
   publicKey,
   parseNearAmount("0.1")
 );
-console.log(createAccountResult);
