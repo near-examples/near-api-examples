@@ -31,10 +31,10 @@ const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Make a function call that modifies state
-const result = await account.callFunction(
-  contractId,
-  "add_message",
-  { text: "Hello, world!" }
-);
+const result = await account.callFunction({
+  contractId: contractId,
+  methodName: "add_message",
+  args: { text: "Hello, world!" },
+});
 
 console.log(result);

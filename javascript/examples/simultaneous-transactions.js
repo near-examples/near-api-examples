@@ -21,21 +21,19 @@ const account = new Account(accountId, provider, signer); // example-account.tes
 
 // Send independent transactions simultaneously to different receivers
 // Prepare the transactions
-const tx1 = account.callFunction(
-  "guestbook.near-examples.testnet",
-  "add_message",
-  { text: "Hello, world!" },
-  0,
-  "100000000000000"
-);
+const tx1 = account.callFunction({
+  contractId: "guestbook.near-examples.testnet",
+  methodName: "add_message",
+  args: { text: "Hello, world!" },
+  gas: "100000000000000",
+});
 
-const tx2 = account.callFunction(
-  "counter.near-examples.testnet",
-  "increment",
-  {},
-  0,
-  "100000000000000"
-);
+const tx2 = account.callFunction({
+  contractId: "counter.near-examples.testnet",
+  methodName: "increment",
+  args: {},
+  gas: "100000000000000",
+});
 
 // Send the transactions simultaneously
 const transactionsResults = await Promise.all([tx1, tx2]);

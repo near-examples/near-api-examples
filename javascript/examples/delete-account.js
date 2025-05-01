@@ -22,7 +22,7 @@ const provider = new JsonRpcProvider({
 const accountId = process.env.ACCOUNT_ID;
 const master = new Account(accountId, provider, signer)
 
-const deleteMe = Date.now().toString();
+const deleteMe = `${Date.now()}.testnet`;
 
 await master.createTopLevelAccount(
   deleteMe,

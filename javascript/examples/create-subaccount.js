@@ -33,5 +33,4 @@ await account.createSubAccount(
   parseNearAmount("0.1") // Initial balance for new account in yoctoNEAR
 );
 
-console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`)
-console.log(`Seed phrase: ${keyToSeedPhrase(keyPair)}`)
+console.log(`Created ${prefix}.${accountId} with private key ${keyPair.toString()}`)

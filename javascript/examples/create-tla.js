@@ -2,7 +2,7 @@ import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPair } from "@near-js/crypto";
 import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount, keyToSeedPhrase } from "@near-js/utils";
+import { parseNearAmount } from "@near-js/utils";
 
 import dotenv from "dotenv";
 
@@ -35,12 +35,11 @@ await account.createTopLevelAccount(
 );
 
 console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`)
-console.log(`Seed phrase: ${keyToSeedPhrase(keyPair)}`)
 
 // Option 2: Call `testnet` directly
 const newAccountId2 = Date.now() + ".testnet";
 
-await account.functionCall({
+await account.callFunction({
   contractId: "testnet",
   methodName: "create_account",
   args: {
@@ -49,5 +48,4 @@ await account.functionCall({
   }
 })
 
-console.log(`Created account ${newAccountId2} with privateKey: ${secretKey}`)
-console.log(`Seed phrase: ${keyToSeedPhrase(keyPair)}`)
+console.log(`Created account ${newAccountId2} with privateKey: ${keyPair.toString()}`)

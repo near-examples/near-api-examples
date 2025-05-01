@@ -21,7 +21,7 @@ const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Send the batch of actions
-const batchActionsResult = await account.createSignAndSendTx({
+const batchActionsResult = await account.signAndSendTransaction({
   receiverId: "counter.near-examples.testnet",
   actions: [
     actionCreators.functionCall("increment", {}, "30000000000000", 0),

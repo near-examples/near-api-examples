@@ -1,7 +1,9 @@
 import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount } from "@near-js/utils";
+import { NearToken } from "@near-js/tokens";
+
+const NEAR = new NearToken();
 
 import dotenv from "dotenv";
 
@@ -22,9 +24,10 @@ const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer);
 
 // Test the signer by transferring NEAR
-const sendTokensResult = await account.transfer(
-  "receiver-account.testnet",
-  parseNearAmount("0.1")
+const sendTokensResult = await account.transferToken(
+  NEAR,
+  NEAR.toUnits("0.1"),
+  "receiver-account.testnet"
 );
 
 console.log(sendTokensResult);

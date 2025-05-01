@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 
 const NEAR = new NearToken();
 const USDT = new USDTFungibleToken();
-const RefToken = new FungibleToken("ref.fakes.testnet", {
+const REF = new FungibleToken("ref.fakes.testnet", {
   decimals: 8,
   symbol: "REF",
 });
@@ -29,37 +29,34 @@ const provider = new JsonRpcProvider({
 // Create an account object
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
-// Send NEAR tokens to another account
+// ------- Send NEAR tokens to another account -------
 const sendNearTokensResult = await account.transferToken(
   NEAR,
   NEAR.toUnits("0.1"), // Amount being sent in yoctoNEAR
   "receiver-account.testnet" // Receiver account
 );
-
 console.log(sendNearTokensResult);
 
-const usdtBalance = await account.getFormattedTokenBalance(USDT);
+// ------- Send USDT tokens to another account -------
+// if a user isn't registered, the transfer will fail
+// it a user is already registered, we'll just get funds back
+await account.registerTokenAccount(USDT, "receiver-account.testnet");
 
-console.log("USDT balance", usdtBalance);
-
-// Send USDT tokens to another account
+// Use https://testnet.rhea.finance/#near|usdtt.fakes.testnet to get USDT token
 const sendUsdtTokensResult = await account.transferToken(
   USDT,
   USDT.toUnits("1"), // Amount of USDT being sent
   "receiver-account.testnet" // Receiver account
 );
-
 console.log(sendUsdtTokensResult);
 
-const refBalance = await account.getFormattedTokenBalance(RefToken);
-
-console.log("Ref balance", refBalance);
-
-// Send USDT tokens to another account
-const sendRefTokensResult = await account.transferToken(
-  RefToken,
-  RefToken.toUnits("1"), // Amount of Ref tokens being sent
+// ------- Send REF tokens to another account -------
+// Use https://testnet.rhea.finance/#near|ref.fakes.testnet to get REF tokens
+const sendREFsResult = await account.transferToken(
+  REF,
+  REF.toUnits("1"), // Amount of Ref tokens being sent
   "receiver-account.testnet" // Receiver account
 );
 
-console.log(sendRefTokensResult);
+// we haven't registered a receiver before sending, so it may fail
+console.log(sendREFsResult);
