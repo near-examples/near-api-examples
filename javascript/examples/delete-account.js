@@ -2,7 +2,7 @@ import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
 import { KeyPair } from "@near-js/crypto";
-import { parseNearAmount } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
 
 import dotenv from "dotenv";
 
@@ -27,7 +27,7 @@ const deleteMe = `${Date.now()}.testnet`;
 await master.createTopLevelAccount(
   deleteMe,
   keyPair.getPublicKey().toString(),
-  parseNearAmount("0.1")
+  NEAR.toUnits("0.1")
 );
 
 // Create an account object for the new account with corresponding signer

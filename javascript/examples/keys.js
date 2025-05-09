@@ -2,7 +2,7 @@ import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
 import { KeyPair } from "@near-js/crypto";
-import { parseNearAmount } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
 
 import dotenv from "dotenv";
 
@@ -48,7 +48,7 @@ await account.addFunctionCallAccessKey(
   fnKeyPair.getPublicKey(), // The new public key ed25519:2ASWc...
   "example-contract.testnet", // Contract this key is allowed to call (optional)
   ["example_method"], // Methods this key is allowed to call (optional)
-  parseNearAmount("0.25") // Gas allowance key can use to call methods (optional)
+  NEAR.toUnits("0.25") // Gas allowance key can use to call methods (optional)
 );
 console.log(`Added FCK ${fnKeyPair.toString()}`);
 

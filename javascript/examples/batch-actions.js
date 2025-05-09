@@ -1,8 +1,8 @@
 import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount } from "@near-js/utils";
 import { actionCreators } from "@near-js/transactions";
+import { NEAR } from "@near-js/tokens";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
@@ -25,7 +25,7 @@ const batchActionsResult = await account.signAndSendTransaction({
   receiverId: "counter.near-examples.testnet",
   actions: [
     actionCreators.functionCall("increment", {}, "30000000000000", 0),
-    actionCreators.transfer(parseNearAmount("0.1"))
+    actionCreators.transfer(NEAR.toUnits("0.1"))
   ],
 });
 

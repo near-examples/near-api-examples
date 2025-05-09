@@ -2,7 +2,7 @@ import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPair } from "@near-js/crypto";
 import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
 
 import dotenv from "dotenv";
 
@@ -31,7 +31,7 @@ const publicKey = keyPair.getPublicKey().toString();
 await account.createTopLevelAccount(
   newAccountId,
   publicKey,
-  parseNearAmount("0.1")
+  NEAR.toUnits("0.1")
 );
 
 console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`)

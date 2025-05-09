@@ -1,4 +1,3 @@
-import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
 import { actionCreators, createTransaction } from "@near-js/transactions";

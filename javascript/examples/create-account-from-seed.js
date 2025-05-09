@@ -1,8 +1,7 @@
 import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount } from "@near-js/utils";
-
+import { NEAR } from "@near-js/tokens";
 import { generateSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
 
@@ -24,5 +23,5 @@ console.log(`Created key ${secretKey} with seed phrase ${seedPhrase}`);
 await account.createTopLevelAccount(
   `acc-${Date.now()}.testnet`,
   publicKey,
-  parseNearAmount("0.1")
+  NEAR.toUnits("0.1")
 );

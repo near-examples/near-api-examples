@@ -2,7 +2,7 @@ import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
 import { KeyPair } from "@near-js/crypto";
-import { parseNearAmount } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
 
 import dotenv from "dotenv";
 
@@ -30,7 +30,7 @@ const prefix = Date.now().toString();
 await account.createSubAccount(
   prefix,    // prefix for the sub account (e.g. sub.near.testnet)
   publicKey, // ed25519:2ASWc...
-  parseNearAmount("0.1") // Initial balance for new account in yoctoNEAR
+  NEAR.toUnits("0.1") // Initial balance for new account in yoctoNEAR
 );
 
 console.log(`Created ${prefix}.${accountId} with private key ${keyPair.toString()}`)

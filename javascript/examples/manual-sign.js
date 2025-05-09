@@ -2,7 +2,8 @@ import { JsonRpcProvider } from "@near-js/providers";
 import { Account } from "@near-js/accounts";
 import { KeyPairSigner } from "@near-js/signers";
 import { actionCreators, createTransaction } from "@near-js/transactions";
-import { parseNearAmount, baseDecode } from "@near-js/utils";
+import { baseDecode } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
 
 import dotenv from "dotenv";
 
@@ -32,7 +33,7 @@ const nonce = ++accessKey.nonce;
 const recentBlockHash = baseDecode(accessKey.block_hash);
 
 // 3. Construct the transaction
-const actions = [actionCreators.transfer(parseNearAmount("0.1"))];
+const actions = [actionCreators.transfer(NEAR.toUnits("0.1"))];
 
 const transaction = createTransaction(
   accountId,

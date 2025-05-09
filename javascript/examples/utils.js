@@ -1,12 +1,12 @@
-import { parseNearAmount, formatNearAmount } from "@near-js/utils";
 import { USDT } from "@near-js/tokens/testnet";
+import { NEAR } from "@near-js/tokens";
 
 // Convert NEAR amount into yoctoNEAR
-const amountInYoctoNear = parseNearAmount("0.1");
+const amountInYoctoNear = NEAR.toUnits("0.1");
 console.log(amountInYoctoNear);
 
 // Convert yoctoNEAR amount into NEAR
-const amountInNear = formatNearAmount("1000000000000000000000000");
+const amountInNear = NEAR.toDecimal("1000000000000000000000000");
 console.log(amountInNear);
 
 // convert USDT amount into base units
