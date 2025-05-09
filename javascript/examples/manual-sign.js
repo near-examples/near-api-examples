@@ -1,61 +1,77 @@
-import { KeyPair, transactions, providers, utils } from "near-api-js";
-import sha256 from "js-sha256";
+import { JsonRpcProvider } from "@near-js/providers";
+import { Account } from "@near-js/accounts";
+import { KeyPairSigner } from "@near-js/signers";
+import { actionCreators, createTransaction } from "@near-js/transactions";
+import { baseDecode } from "@near-js/utils";
+import { NEAR } from "@near-js/tokens";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-const privateKey = process.env.PRIVATE_KEY;
+
 const accountId = process.env.ACCOUNT_ID;
 
-const keyPair = KeyPair.fromString(privateKey);
-
-const provider = new providers.JsonRpcProvider({
+// Create a provider for testnet RPC
+const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-// Get the nonce of the key
-const accessKey = await provider.query(
-  `access_key/${accountId}/${keyPair.getPublicKey().toString()}`,
-  "",
-);
+// Assume there is a signer that will sign the transaction
+const privateKey = process.env.PRIVATE_KEY;
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+
+// We only need to know the public key of the signer
+const signerPublicKey = await signer.getPublicKey();
+
+// We create a transaction manually
+
+// 1. Get the nonce of the key
+const accessKey = await provider.viewAccessKey(accountId, signerPublicKey);
 const nonce = ++accessKey.nonce;
 
-// Get a recent block hash
-const recentBlockHash = utils.serialize.base_decode(accessKey.block_hash);
+// 2. Get a recent block hash
+const recentBlockHash = baseDecode(accessKey.block_hash);
 
-// Construct actions
-const actions = [transactions.transfer(utils.format.parseNearAmount("1"))];
+// 3. Construct the transaction
+const actions = [actionCreators.transfer(NEAR.toUnits("0.1"))];
 
-// Construct transaction
-const transaction = transactions.createTransaction(
+const transaction = createTransaction(
   accountId,
-  keyPair.getPublicKey(),
+  signerPublicKey,
   "receiver-account.testnet",
   nonce,
   actions,
-  recentBlockHash,
+  recentBlockHash
 );
 
-// Serialize transaction
-const serializedTx = utils.serialize.serialize(
-  transactions.SCHEMA.Transaction,
-  transaction,
-);
-
-// Get serialized transaction hash
-const serializedTxHash = new Uint8Array(sha256.sha256.array(serializedTx));
-
-// Get signature
-const signature = keyPair.sign(serializedTxHash);
-
-// Construct signed transaction
-const signedTransaction = new transactions.SignedTransaction({
-  transaction,
-  signature: new transactions.Signature({
-    keyType: transaction.publicKey.keyType,
-    data: signature.signature,
-  }),
-});
+// Sign and send
+const [txHash, signedTransaction] = await signer.signTransaction(transaction);
+console.log(Buffer.from(txHash).toString("hex"));
 
 // Send transaction
 const sendTransactionResult = await provider.sendTransaction(signedTransaction);
 console.log(sendTransactionResult);
+
+
+/**
+ * We can also simply instantiate an account object (that does not require a signer)
+ * and use let it construct the transaction for us.
+ */
+
+// 1. Instantiate account
+const account = new Account(accountId, provider);
+
+// 2. Create transaction
+const transaction2 = await account.createTransaction(
+  "receiver-account.testnet",
+  actions,
+  signerPublicKey
+)
+
+// 3. Sign transaction
+const [txHash2, signedTransaction2] = await signer.signTransaction(transaction2);
+console.log(Buffer.from(txHash2).toString("hex"));
+
+// 4. Send transaction
+const sendTransactionResult2 = await provider.sendTransaction(signedTransaction2);
+console.log(sendTransactionResult2);

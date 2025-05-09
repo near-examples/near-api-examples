@@ -1,29 +1,51 @@
 {
   "type": "module",
   "dependencies": {
+    "@near-js/accounts": "link:../../near-api-js/packages/accounts",
+    "@near-js/crypto": "link:../../near-api-js/packages/crypto",
+    "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
+    "@near-js/providers": "link:../../near-api-js/packages/providers",
+    "@near-js/signers": "link:../../near-api-js/packages/signers",
+    "@near-js/tokens": "link:../../near-api-js/packages/tokens",
+    "@near-js/transactions": "link:../../near-api-js/packages/transactions",
+    "@near-js/utils": "link:../../near-api-js/packages/utils",
     "borsh": "2.0.0",
     "dotenv": "^16.4.7",
     "js-sha256": "^0.11.0",
-    "near-api-js": "^4.0.4",
     "near-seed-phrase": "^0.2.1"
   },
   "scripts": {
-    "credentials-directory": "node examples/keystore-options/credentials-directory.js",
-    "credentials-file": "node examples/keystore-options/credentials-file.js",
-    "private-key-string": "node examples/keystore-options/private-key-string.js",
-    "seed-phrase": "node examples/keystore-options/seed-phrase.js",
     "account-details": "node examples/account-details.js",
     "batch-actions": "node examples/batch-actions.js",
     "contract-interaction": "node examples/contract-interaction.js",
     "create-account-from-seed": "node examples/create-account-from-seed.js",
-    "create-account": "node examples/create-account.js",
+    "create-subaccount": "node examples/create-subaccount.js",
+    "create-tla": "node examples/create-tla.js",
+    "credentials-directory": "node examples/keystore-options/credentials-directory.js",
+    "credentials-file": "node examples/keystore-options/credentials-file.js",
     "delete-account": "node examples/delete-account.js",
+    "deploy-contract": "node examples/deploy-contract.js",
     "keys": "node examples/keys.js",
     "manual-sign": "node examples/manual-sign.js",
+    "private-key-string": "node examples/keystore-options/private-key-string.js",
     "rpc-failover": "node examples/rpc-failover.js",
+    "seed-phrase": "node examples/keystore-options/seed-phrase.js",
     "send-tokens": "node examples/send-tokens.js",
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
+    "tokens-balance": "node examples/tokens-balance.js",
     "utils": "node examples/utils.js",
     "verify-signature": "node examples/verify-signature/verify-signature.js"
+  },
+  "pnpm": {
+    "overrides": {
+      "@near-js/accounts": "link:../../near-api-js/packages/accounts",
+      "@near-js/signers": "link:../../near-api-js/packages/signers",
+      "@near-js/providers": "link:../../near-api-js/packages/providers",
+      "@near-js/utils": "link:../../near-api-js/packages/utils",
+      "@near-js/transactions": "link:../../near-api-js/packages/transactions",
+      "@near-js/keystores-node": "link:../../near-api-js/packages/keystores-node",
+      "@near-js/crypto": "link:../../near-api-js/packages/crypto",
+      "@near-js/tokens": "link:../../near-api-js/packages/tokens"
+    }
   }
 }

@@ -1,32 +1,37 @@
-import { connect, keyStores, KeyPair, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { parseNearAmount } from "@near-js/utils";
 import { parseSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
+import { NearToken } from "@near-js/tokens";
+
+const NEAR = new NearToken();
 
 // Load environment variables
 dotenv.config({ path: "../.env" });
-const seedPhrase = process.env.SEED_PHRASE;
-const accountId = process.env.ACCOUNT_ID;
 
 // Create a keystore and add the key pair via a seed phrase
-const { secretKey } = parseSeedPhrase(seedPhrase); // "royal success river ..."
-const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(secretKey); // ed25519::5Fg2...
-await myKeyStore.setKey("testnet", accountId, keyPair);
+const seedPhrase = process.env.SEED_PHRASE; // "royal success river ..."
+const { secretKey } = parseSeedPhrase(seedPhrase);
 
-// Create a connection to NEAR testnet
-const connectionConfig = {
-  networkId: "testnet",
-  keyStore: myKeyStore,
-  nodeUrl: "https://test.rpc.fastnear.com",
-};
-const nearConnection = await connect(connectionConfig);
+// Create a signer from a private key string
+const signer = KeyPairSigner.fromSecretKey(secretKey);
+
+// Create a connection to testnet RPC
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
+});
 
 // Create an account object
-const account = await nearConnection.account(accountId); // example-account.testnet
+const accountId = process.env.ACCOUNT_ID;
+const account = new Account(accountId, provider, signer);
 
 // Test the signer by transferring NEAR
-const sendTokensResult = await account.sendMoney(
-  "receiver-account.testnet",
-  utils.format.parseNearAmount("1"),
+const sendTokensResult = await account.transferToken(
+  NEAR,
+  NEAR.toUnits("0.1"),
+  "receiver-account.testnet"
 );
+
 console.log(sendTokensResult);
