@@ -20,7 +20,7 @@ const totalMessages = await provider.callFunction(
   {}
 );
 
-console.log(totalMessages);
+console.log({ totalMessages });
 
 // Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;
@@ -37,4 +37,4 @@ const result = await account.callFunction({
   args: { text: "Hello, world!" },
 });
 
-console.log(result);
+console.log({ result });

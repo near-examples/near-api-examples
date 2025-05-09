@@ -28,4 +28,5 @@ const batchActionsResult = await account.signAndSendTransaction({
     actionCreators.transfer(parseNearAmount("0.1"))
   ],
 });
+
 console.log(batchActionsResult);

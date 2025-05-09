@@ -6,9 +6,8 @@ const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-const rpcBalance = await provider.viewAccountBalance("example-account.testnet")
 const rpcState = await provider.viewAccount("example-account.testnet");
-console.log({ rpcBalance, rpcState });
+console.log({ rpcState });
 
 // Option 2: Use an Account object
 const account = new Account("example-account.testnet", provider);

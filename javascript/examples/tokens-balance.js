@@ -1,14 +1,12 @@
 import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
-import { FungibleToken, NearToken } from "@near-js/tokens";
-import { USDT as USDTFungibleToken } from "@near-js/tokens/usdt/testnet";
+import { FungibleToken, NEAR } from "@near-js/tokens";
+import { USDT } from "@near-js/tokens/testnet";
 
 import dotenv from "dotenv";
 
-const NEAR = new NearToken();
-const USDT = new USDTFungibleToken();
 const REF = new FungibleToken("ref.fakes.testnet", {
-  decimals: 8,
+  decimals: 18,
   symbol: "REF",
 });
 
@@ -22,28 +20,19 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const account = new Account(accountId, provider); // example-account.testnet
-
-// ------- Fetch NEAR tokens formatted balance -------
-const nearTokensBalance = await account.getFormattedTokenBalance(NEAR);
-console.log("NEAR: ", nearTokensBalance);
-
-// ------- Fetch USDT tokens formatted balance -------
-const usdtTokensBalance = await account.getFormattedTokenBalance(USDT);
-console.log("USDT: ", usdtTokensBalance);
-
-// ------- Fetch REF tokens formatted balance -------
-const refTokensBalance = await account.getFormattedTokenBalance(REF);
-console.log("REF: ", refTokensBalance);
+const account = new Account(accountId, provider);
 
 // ------- Fetch NEAR tokens balance in the smallest units as BigInt -------
-const nearTokensBalanceInt = await account.getTokenBalance(NEAR);
+const nearTokensBalanceInt = await account.getBalance(NEAR);
 console.log("NEAR as units: ", nearTokensBalanceInt);
+console.log("NEAR: ", NEAR.toDecimal(nearTokensBalanceInt));
 
 // ------- Fetch USDT tokens balance in the smallest units as BigInt -------
-const usdtTokensBalanceInt = await account.getTokenBalance(USDT);
+const usdtTokensBalanceInt = await account.getBalance(USDT);
 console.log("USDT as units: ", usdtTokensBalanceInt);
+console.log("USDT: ", USDT.toDecimal(usdtTokensBalanceInt));
 
 // ------- Fetch REF tokens balance in the smallest units as BigInt -------
-const refTokensBalanceInt = await account.getTokenBalance(REF);
+const refTokensBalanceInt = await account.getBalance(REF);
 console.log("REF as units: ", refTokensBalanceInt);
+console.log("REF: ", REF.toDecimal(refTokensBalanceInt));
