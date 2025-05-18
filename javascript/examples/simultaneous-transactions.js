@@ -1,7 +1,8 @@
+import { Account } from "@near-js/accounts";
 import { JsonRpcProvider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
-import { actionCreators, createTransaction } from "@near-js/transactions";
-import { baseDecode } from "@near-js/utils";
+import { actionCreators } from "@near-js/transactions";
+import { KeyPair } from "@near-js/crypto";
 
 import dotenv from "dotenv";
 
@@ -11,57 +12,89 @@ const accountId = process.env.ACCOUNT_ID;
 
 // Create a signer from a private key string
 const signer = KeyPairSigner.fromSecretKey(privateKey);
-const signerPublicKey = await signer.getPublicKey();
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-// 1. Get information about the access key
-const accessKey = await provider.viewAccessKey(accountId, signerPublicKey);
+// Create an account object
+const account = new Account(accountId, provider, signer); // example-account.testnet
 
-// 2. Get a recent block hash
-const recentBlockHash = baseDecode(accessKey.block_hash);
+// Transactions can only be truly simultaneous if signed with different key pairs,
+// since each key tracks its own nonce, sending multiple transactions from the same key,
+// even with distinct nonces, risks race conditions and execution conflicts.
 
-// 3. Construct the transactions
-let actions = [actionCreators.functionCall("add_message", { text: "Hello, world!" }, "30000000000000", 0)];
+// 1. (Optional) Create two different key pairs and add them to your account
+// This step is optional, so you can skip it if you already have the keys ready.
+const keyPairOne = KeyPair.fromRandom("ed25519");
+console.log("KeyPair One:", keyPairOne.getPublicKey().toString());
 
-let nonce = ++accessKey.nonce;
+const keyPairTwo = KeyPair.fromRandom("ed25519");
+console.log("KeyPair Two:", keyPairTwo.getPublicKey().toString());
 
-const addMessage = createTransaction(
+// add two keys in a single transaction
+await account.signAndSendTransaction({
+  receiverId: account.accountId,
+  actions: [
+    actionCreators.addKey(
+      keyPairOne.getPublicKey(),
+      actionCreators.fullAccessKey()
+    ),
+    actionCreators.addKey(
+      keyPairTwo.getPublicKey(),
+      actionCreators.fullAccessKey()
+    ),
+  ],
+  waitUntil: "FINAL",
+});
+
+const accountOne = new Account(
   accountId,
-  signerPublicKey,
+  provider,
+  new KeyPairSigner(keyPairOne)
+);
+const accountTwo = new Account(
+  accountId,
+  provider,
+  new KeyPairSigner(keyPairTwo)
+);
+
+// 2. Construct the transactions
+const signedTxOne = await accountOne.createSignedTransaction(
   "guestbook.near-examples.testnet",
-  nonce,
-  actions,
-  recentBlockHash
+  [
+    actionCreators.functionCall(
+      "add_message",
+      { text: "Hello, world!" },
+      "30000000000000",
+      0
+    ),
+  ]
 );
-
-// increment nonce so there are no collisions
-nonce = nonce + 1n;
-
-actions = [actionCreators.functionCall("increment", {}, "30000000000000", 0)]
-const increment = createTransaction(
-  accountId,
-  signerPublicKey,
+const signedTxTwo = await accountTwo.createSignedTransaction(
   "counter.near-examples.testnet",
-  nonce,
-  actions,
-  recentBlockHash
+  [actionCreators.functionCall("increment", {}, "30000000000000", 0)]
 );
 
-// 4. Sign the transactions
-const [txHash1, signedTransaction1] = await signer.signTransaction(addMessage);
-const [txHash2, signedTransaction2] = await signer.signTransaction(increment);
+console.log("Created two different signed transactions");
 
-console.log(Buffer.from(txHash1).toString("hex"));
-console.log(Buffer.from(txHash2).toString("hex"));
-
-// 5. Send the transactions
-const tx1 = provider.sendTransaction(signedTransaction1);
-const tx2 = provider.sendTransaction(signedTransaction2);
+// 3. Send the transactions
+const sendTxOne = provider.sendTransaction(signedTxOne);
+const sendTxTwo = provider.sendTransaction(signedTxTwo);
 
 // Wait for them to finish
-const transactionsResults = await Promise.all([tx1, tx2]);
+const transactionsResults = await Promise.all([sendTxOne, sendTxTwo]);
 console.log(transactionsResults);
+
+// 4. (Optional) Since we created these keys just for this example, we’ll remove them afterward
+// But in a real application, you don’t need to delete them unless there's a specific reason to.
+
+// delete two keys in a single transaction
+await account.signAndSendTransaction({
+  receiverId: account.accountId,
+  actions: [
+    actionCreators.deleteKey(keyPairOne.getPublicKey()),
+    actionCreators.deleteKey(keyPairTwo.getPublicKey()),
+  ],
+});
