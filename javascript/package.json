@@ -29,6 +29,7 @@
     "manual-sign": "node examples/manual-sign.js",
     "private-key-string": "node examples/keystore-options/private-key-string.js",
     "rpc-failover": "node examples/rpc-failover.js",
+    "seat-price": "node examples/seat-price.js",
     "seed-phrase": "node examples/keystore-options/seed-phrase.js",
     "send-tokens": "node examples/send-tokens.js",
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
