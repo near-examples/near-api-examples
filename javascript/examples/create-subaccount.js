@@ -30,7 +30,7 @@ const prefix = Date.now().toString();
 await account.createSubAccount(
   prefix,    // prefix for the sub account (e.g. sub.near.testnet)
   publicKey, // ed25519:2ASWc...
-  NEAR.toUnits("0.1") // Initial balance for new account in yoctoNEAR
+  NEAR.toUnits("0") // Initial balance for new account in yoctoNEAR
 );
 
 console.log(`Created ${prefix}.${accountId} with private key ${keyPair.toString()}`)

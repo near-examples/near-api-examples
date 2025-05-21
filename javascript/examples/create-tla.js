@@ -31,7 +31,7 @@ const publicKey = keyPair.getPublicKey().toString();
 await account.createTopLevelAccount(
   newAccountId,
   publicKey,
-  NEAR.toUnits("0.1")
+  NEAR.toUnits("0")
 );
 
 console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`)

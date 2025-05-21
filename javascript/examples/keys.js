@@ -33,26 +33,32 @@ const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 account.setSigner(signer);
 
-// Add full access key
+// New keys
 const fullKeyPair = KeyPair.fromRandom("ed25519");
+const fnKeyPair = KeyPair.fromRandom("ed25519");
 
+// Add a Full Access Key
 await account.addFullAccessKey(
   fullKeyPair.getPublicKey().toString() // ed25519:2ASWc...
 );
-console.log(`Added FAK ${fullKeyPair.toString()}`);
 
-// Add function call access key
-const fnKeyPair = KeyPair.fromRandom("ed25519");
-
-await account.addFunctionCallAccessKey(
-  fnKeyPair.getPublicKey(), // The new public key ed25519:2ASWc...
-  "example-contract.testnet", // Contract this key is allowed to call (optional)
-  ["example_method"], // Methods this key is allowed to call (optional)
-  NEAR.toUnits("0.25") // Gas allowance key can use to call methods (optional)
+// Add Function Call Access Key
+await account.addFunctionCallAccessKey({
+  publicKey: fnKeyPair.getPublicKey(), // The new public key ed25519:2ASWc...
+  contractId: "example-contract.testnet", // Contract this key is allowed to call (optional)
+  methodNames: ["example_method"], // Methods this key is allowed to call (optional)
+  allowance: NEAR.toUnits("0.25") // Gas allowance key can use to call methods (optional)
+  }
 );
+
+console.log(`Added FAK ${fullKeyPair.toString()}`);
 console.log(`Added FCK ${fnKeyPair.toString()}`);
+
+const accessKeysNew = await account.getAccessKeyList();
+console.log(accessKeysNew);
 
 // Use the new FullAccess Key to delete the Function Call Key
 const newSigner = KeyPairSigner.fromSecretKey(fullKeyPair.toString());
 account.setSigner(newSigner)
 await account.deleteKey(fnKeyPair.getPublicKey().toString());
+await account.deleteKey(fullKeyPair.getPublicKey().toString());
