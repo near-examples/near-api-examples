@@ -1,14 +1,14 @@
 {
   "type": "module",
   "dependencies": {
-    "@near-js/accounts": "^2.0.0",
-    "@near-js/crypto": "^2.0.0",
-    "@near-js/keystores-node": "^2.0.0",
-    "@near-js/providers": "^2.0.0",
-    "@near-js/signers": "^2.0.0",
-    "@near-js/tokens": "^2.0.0",
-    "@near-js/transactions": "^2.0.0",
-    "@near-js/utils": "^2.0.0",
+    "@near-js/accounts": "^2.0.1",
+    "@near-js/crypto": "^2.0.1",
+    "@near-js/keystores-node": "^2.0.1",
+    "@near-js/providers": "^2.0.1",
+    "@near-js/signers": "^2.0.1",
+    "@near-js/tokens": "^2.0.1",
+    "@near-js/transactions": "^2.0.1",
+    "@near-js/utils": "^2.0.1",
     "borsh": "2.0.0",
     "dotenv": "^16.4.7",
     "js-sha256": "^0.11.0",
@@ -36,17 +36,5 @@
     "tokens-balance": "node examples/tokens-balance.js",
     "utils": "node examples/utils.js",
     "verify-signature": "node examples/verify-signature/verify-signature.js"
-  },
-  "pnpm": {
-    "overrides": {
-      "@near-js/accounts": "^2.0.0",
-      "@near-js/signers": "^2.0.0",
-      "@near-js/providers": "^2.0.0",
-      "@near-js/utils": "^2.0.0",
-      "@near-js/transactions": "^2.0.0",
-      "@near-js/keystores-node": "^2.0.0",
-      "@near-js/crypto": "^2.0.0",
-      "@near-js/tokens": "^2.0.0"
-    }
   }
 }
