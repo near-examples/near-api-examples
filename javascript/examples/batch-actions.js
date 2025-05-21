@@ -1,36 +1,32 @@
-import { connect, keyStores, KeyPair, transactions, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { actionCreators } from "@near-js/transactions";
+import { NEAR } from "@near-js/tokens";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
+
+// Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+
+// Create a connection to testnet RPC
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
+});
+
+// Create an account object
 const accountId = process.env.ACCOUNT_ID;
-
-const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(privateKey);
-await myKeyStore.setKey("testnet", accountId, keyPair);
-
-const connectionConfig = {
-  networkId: "testnet",
-  keyStore: myKeyStore,
-  nodeUrl: "https://test.rpc.fastnear.com",
-};
-const nearConnection = await connect(connectionConfig);
-
-const account = await nearConnection.account(accountId);
-
-// Send a batch of actions to a single receiver
-// Prepare the actions
-const callAction = transactions.functionCall(
-  "increment", // Method name
-  [], // Arguments
-  "30000000000000", // Gas
-  0, // Deposit
-);
-const transferAction = transactions.transfer(utils.format.parseNearAmount("1"));
+const account = new Account(accountId, provider, signer); // example-account.testnet
 
 // Send the batch of actions
 const batchActionsResult = await account.signAndSendTransaction({
   receiverId: "counter.near-examples.testnet",
-  actions: [callAction, transferAction],
+  actions: [
+    actionCreators.functionCall("increment", {}, "30000000000000", 0),
+    actionCreators.transfer(NEAR.toUnits("0.1"))
+  ],
 });
+
 console.log(batchActionsResult);

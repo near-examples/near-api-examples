@@ -1,53 +1,64 @@
-import { connect, keyStores, KeyPair, utils } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
+import { KeyPairSigner } from "@near-js/signers";
+import { KeyPair } from "@near-js/crypto";
+import { NEAR } from "@near-js/tokens";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-const privateKey = process.env.PRIVATE_KEY;
+
 const accountId = process.env.ACCOUNT_ID;
 
-const myKeyStore = new keyStores.InMemoryKeyStore();
-const keyPair = KeyPair.fromString(privateKey);
-await myKeyStore.setKey("testnet", accountId, keyPair);
+// Create a connection to testnet RPC
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
+});
 
-const connectionConfig = {
-  networkId: "testnet",
-  keyStore: myKeyStore,
-  nodeUrl: "https://test.rpc.fastnear.com",
-};
-const nearConnection = await connect(connectionConfig);
+// Query keys with the provider
+const keysProvider = await provider.viewAccessKeyList(accountId);
+console.log(keysProvider);
 
-const account = await nearConnection.account(accountId);
+// Create an Account object without a signer
+const account = new Account(accountId, provider);
 
-// Get all access keys for the account
-const accessKeys = await account.getAccessKeys();
+// Query keys
+const accessKeys = await account.getAccessKeyList();
 console.log(accessKeys);
 
-// Add full access key
-// Generate a new key pair
-const newFullKeyPair = KeyPair.fromRandom("ed25519");
-const newFullPublicKey = newFullKeyPair.getPublicKey().toString();
-console.log(newFullPublicKey);
 
-const addFullKeyResult = await account.addKey(
-  newFullPublicKey, // The new public key ed25519:2ASWc...
+// Create a signer and add it to the Account
+const privateKey = process.env.PRIVATE_KEY;
+const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+
+account.setSigner(signer);
+
+// New keys
+const fullKeyPair = KeyPair.fromRandom("ed25519");
+const fnKeyPair = KeyPair.fromRandom("ed25519");
+
+// Add a Full Access Key
+await account.addFullAccessKey(
+  fullKeyPair.getPublicKey().toString() // ed25519:2ASWc...
 );
-console.log(addFullKeyResult);
 
-// Add function call access key
-// Generate a new key pair
-const newFunctionKeyPair = KeyPair.fromRandom("ed25519");
-const newFunctionPublicKey = newFunctionKeyPair.getPublicKey().toString();
-console.log(newFunctionPublicKey);
-
-const addFunctionKeyResult = await account.addKey(
-  newFunctionPublicKey, // The new public key ed25519:2ASWc...
-  "example-contract.testnet", // Contract this key is allowed to call (optional)
-  ["example_method"], // Methods this key is allowed to call (optional)
-  utils.format.parseNearAmount("0.25"), // Gas allowance key can use to call methods (optional)
+// Add Function Call Access Key
+await account.addFunctionCallAccessKey({
+  publicKey: fnKeyPair.getPublicKey(), // The new public key ed25519:2ASWc...
+  contractId: "example-contract.testnet", // Contract this key is allowed to call (optional)
+  methodNames: ["example_method"], // Methods this key is allowed to call (optional)
+  allowance: NEAR.toUnits("0.25") // Gas allowance key can use to call methods (optional)
+  }
 );
-console.log(addFunctionKeyResult);
 
-// Delete full access key
-const publicKeyToDelete = newFullPublicKey;
-const deleteFullKeyResult = await account.deleteKey(publicKeyToDelete); // The public key being deleted ed25519:2ASWc...
-console.log(deleteFullKeyResult);
+console.log(`Added FAK ${fullKeyPair.toString()}`);
+console.log(`Added FCK ${fnKeyPair.toString()}`);
+
+const accessKeysNew = await account.getAccessKeyList();
+console.log(accessKeysNew);
+
+// Use the new FullAccess Key to delete the Function Call Key
+const newSigner = KeyPairSigner.fromSecretKey(fullKeyPair.toString());
+account.setSigner(newSigner)
+await account.deleteKey(fnKeyPair.getPublicKey().toString());
+await account.deleteKey(fullKeyPair.getPublicKey().toString());

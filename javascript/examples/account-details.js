@@ -1,21 +1,17 @@
-import { connect } from "near-api-js";
+import { Account } from "@near-js/accounts";
+import { JsonRpcProvider } from "@near-js/providers";
 
-const connection = await connect({
-  networkId: "testnet",
-  nodeUrl: "https://test.rpc.fastnear.com",
+// Gather details through the RPC Provider
+const provider = new JsonRpcProvider({
+  url: "https://test.rpc.fastnear.com",
 });
 
-// Create an account object
-const account = await connection.account("example-account.testnet");
+const rpcState = await provider.viewAccount("example-account.testnet");
+console.log({ rpcState });
 
-// Gets the total, staked and available balance in yoctoNEAR
-const accountBalance = await account.getAccountBalance();
-console.log(accountBalance);
+// Option 2: Use an Account object
+const account = new Account("example-account.testnet", provider);
+const accountBalance = await account.getBalance();
+const accountState = await account.getState();
 
-// Account's state, including its code hash and storage usage
-const accountState = await account.state();
-console.log(accountState);
-
-// Gets a list of authorized apps for an account
-const accountDetails = await account.getAccountDetails();
-console.log(accountDetails);
+console.log({ accountState, accountBalance });
