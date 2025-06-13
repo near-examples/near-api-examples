@@ -10,6 +10,7 @@
     "@near-js/transactions": "^2.0.1",
     "@near-js/utils": "^2.0.1",
     "borsh": "2.0.0",
+    "bs58": "^6.0.0",
     "dotenv": "^16.4.7",
     "js-sha256": "^0.11.0",
     "near-seed-phrase": "^0.2.1"
@@ -25,6 +26,8 @@
     "credentials-file": "node examples/keystore-options/credentials-file.js",
     "delete-account": "node examples/delete-account.js",
     "deploy-contract": "node examples/deploy-contract.js",
+    "deploy-global-contract-by-account": "node examples/deploy-global-contract-by-account.js",
+    "deploy-global-contract-by-hash": "node examples/deploy-global-contract-by-hash.js",
     "keys": "node examples/keys.js",
     "manual-sign": "node examples/manual-sign.js",
     "private-key-string": "node examples/keystore-options/private-key-string.js",
