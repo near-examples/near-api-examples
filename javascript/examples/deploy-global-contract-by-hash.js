@@ -45,7 +45,9 @@ const consumer = new Account(
   new KeyPairSigner(key)
 );
 
-await consumer.useGlobalContract(bs58.decode(hash));
+await consumer.useGlobalContract({
+  codeHash: bs58.decode(hash),
+});
 
 const contract = await consumer.getContractCode();
 console.log("Size", contract.code.length, "Hash", contract.hash);
