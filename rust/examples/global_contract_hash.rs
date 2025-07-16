@@ -18,4 +18,19 @@ async fn main() {
         .await.unwrap();
 
     println!("{:?}", result);
+
+    // Prepare a transaction to deploy a contract to the provided account using an immutable hash reference to the code from the global contract code storage.
+    let global_hash: types::CryptoHash = "DxfRbrjT3QPmoANMDYTR6iXPGJr7xRUyDnQhcAWjcoFF".parse().unwrap();
+    let my_account_id: AccountId = "my-contract.testnet".parse().unwrap();
+    let my_signer = Signer::new(Signer::from_ledger()).unwrap();
+
+    let result: FinalExecutionOutcomeView = Contract::deploy(my_account_id)
+        .use_global_hash(global_hash)
+        .without_init_call()
+        .with_signer(my_signer)
+        .send_to_testnet()
+        .await.unwrap();
+
+    println!("{:?}", result);
+
 }
