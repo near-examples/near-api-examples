@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{AccountId, NearToken, NetworkConfig, Signer, Tokens};
+use near_api::{AccountId, NearToken, NetworkConfig, Signer, Tokens};
 use near_api::signer::keystore::KeystoreSigner;
 
 #[tokio::main]
@@ -18,7 +18,7 @@ async fn main() {
     let signer = Signer::new(signer).unwrap(); // Create the signer
 
     // Test the signer by transferring NEAR
-    Tokens::of(account_id.clone()) // example-account.testnet
+    Tokens::account(account_id.clone()) // example-account.testnet
         .send_to("receiver-account.testnet".parse().unwrap())
         .near(NearToken::from_near(1))
         .with_signer(signer.clone())

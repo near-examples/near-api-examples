@@ -1,4 +1,4 @@
-use near_api::prelude::{Account, AccountId, NetworkConfig, Tokens};
+use near_api::{Account, AccountId, NetworkConfig, Tokens};
 
 #[tokio::main]
 async fn main() {
@@ -10,7 +10,7 @@ async fn main() {
     let network = NetworkConfig::testnet();
 
     // Gets the available, and staked balance in yoctoNEAR
-    let near_balance = Tokens::of(my_account_id.clone())
+    let near_balance = Tokens::account(my_account_id.clone())
         .near_balance()
         .fetch_from(&network)
         .await

@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{Account, AccountId, NearToken, NetworkConfig, Signer};
+use near_api::{signer, Account, AccountId, NearToken, NetworkConfig, Signer};
 use near_crypto::SecretKey;
 use std::str::FromStr;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -13,7 +13,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -29,24 +29,20 @@ async fn main() {
     .parse()
     .unwrap();
 
-    let (private_key, create_account_tx) = Account::create_account()
+    let private_key = signer::generate_secret_key().unwrap();
+    let create_account_result = Account::create_account(new_account_id.clone()) // example-account.testnet
         .fund_myself(
-            new_account_id.clone(), // example-account.testnet
             account_id.clone(),
             NearToken::from_millinear(100), // Initial balance for new account in yoctoNEAR
         )
-        .new_keypair()
-        .generate_secret_key()
-        .unwrap();
-
-    println!("Private key: {:?}", private_key.to_string());
-    println!("Public key: {:?}", private_key.public_key().to_string());
-
-    let create_account_result = create_account_tx
+        .public_key(private_key.public_key()).unwrap()
         .with_signer(signer.clone()) // Signer is the account that is creating the new account
         .send_to(&network)
         .await
         .unwrap();
+
+    println!("Private key: {:?}", private_key.to_string());
+    println!("Public key: {:?}", private_key.public_key().to_string());
     println!("{:?}", create_account_result);
 
     // Create a sub account
@@ -62,23 +58,19 @@ async fn main() {
     .parse()
     .unwrap();
 
-    let (private_key, create_sub_account_tx) = Account::create_account()
+    let private_key = signer::generate_secret_key().unwrap();
+    let create_sub_account_result = Account::create_account(sub_account_id.clone()) // sub.example-account.testnet
         .fund_myself(
-            sub_account_id.clone(), // sub.example-account.testnet
             account_id.clone(),
             NearToken::from_millinear(100), // Initial balance for sub account in yoctoNEAR
         )
-        .new_keypair()
-        .generate_secret_key()
-        .unwrap();
-
-    println!("Private key: {:?}", private_key.to_string());
-    println!("Public key: {:?}", private_key.public_key().to_string());
-
-    let create_sub_account_result = create_sub_account_tx
+        .public_key(private_key.public_key()).unwrap()
         .with_signer(signer.clone()) // Signer is the account that is creating the sub account
         .send_to(&network)
         .await
         .unwrap();
+
+    println!("Private key: {:?}", private_key.to_string());
+    println!("Public key: {:?}", private_key.public_key().to_string());
     println!("{:?}", create_sub_account_result);
 }
