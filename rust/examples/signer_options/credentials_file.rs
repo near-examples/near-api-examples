@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{AccountId, NearToken, NetworkConfig, Signer, Tokens};
+use near_api::{AccountId, NearToken, NetworkConfig, Signer, Tokens};
 
 #[tokio::main]
 async fn main() {
@@ -10,12 +10,12 @@ async fn main() {
 
     // Create a signer via the credentials directory
     let credentials_path = std::path::PathBuf::from("../credentials-file.json"); // Path relative to the root directory of the project
-    let signer = Signer::new(Signer::access_keyfile(credentials_path).unwrap()).unwrap(); // Create the signer
+    let signer = Signer::new(Signer::from_access_keyfile(credentials_path).unwrap()).unwrap(); // Create the signer
 
     let network = NetworkConfig::testnet();
 
     // Test the signer by transferring NEAR
-    Tokens::of(account_id.clone()) // example-account.testnet
+    Tokens::account(account_id.clone()) // example-account.testnet
         .send_to("receiver-account.testnet".parse().unwrap())
         .near(NearToken::from_near(1))
         .with_signer(signer.clone())

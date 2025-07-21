@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{Account, AccountId, NearToken, NetworkConfig, Signer};
+use near_api::{signer, Account, AccountId, NearToken, NetworkConfig, Signer};
 use near_crypto::SecretKey;
 use std::str::FromStr;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -13,7 +13,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -29,22 +29,18 @@ async fn main() {
     .parse()
     .unwrap();
 
-    let (seed_phrase, create_account_tx) = Account::create_account()
+    let (seed_phrase, seed_pk) = signer::generate_seed_phrase().unwrap();
+    let create_account_result = Account::create_account(new_account_id.clone()) // example-account.testnet
         .fund_myself(
-            new_account_id.clone(), // example-account.testnet
             account_id.clone(),
             NearToken::from_millinear(100), // Initial balance for new account in yoctoNEAR
         )
-        .new_keypair()
-        .generate_seed_phrase()
-        .unwrap();
-
-    println!("Seed phrase: {:?}", seed_phrase);
-
-    let create_account_result = create_account_tx
+        .public_key(seed_pk).unwrap()
         .with_signer(signer.clone()) // Signer is the account that is creating the new account
         .send_to(&network)
         .await
         .unwrap();
+
+    println!("Seed phrase: {:?}", seed_phrase);
     println!("{:?}", create_account_result);
 }
