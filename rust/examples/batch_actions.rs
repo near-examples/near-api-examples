@@ -22,7 +22,7 @@ async fn main() {
     // Prepare the actions
     let call_action = Action::FunctionCall(Box::new(FunctionCallAction {
         method_name: "increment".to_string(),
-        args: vec![],
+        args: serde_json::json!({}).to_string().into_bytes(),
         gas: 30_000_000_000_000,
         deposit: 0,
     }));
