@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{AccountId, Contract, Data, NearToken, NetworkConfig, Signer};
+use near_api::{AccountId, Contract, Data, NearToken, NetworkConfig, Signer};
 use near_crypto::SecretKey;
 use serde_json::json;
 use std::str::FromStr;
@@ -14,7 +14,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     // Create a connection to the NEAR testnet
     let network = NetworkConfig::testnet();
@@ -51,9 +51,8 @@ async fn main() {
 
     // Deploy a contract to an account
     // Set up a contract object
-    let new_contract = Contract(account_id.clone());
-    let deploy_result = new_contract
-        .deploy(include_bytes!("../../contracts/contract.wasm").to_vec()) // Path of contract WASM relative to this file
+    let deploy_result = Contract::deploy(account_id.clone())
+        .use_code(include_bytes!("../../contracts/contract.wasm").to_vec()) // Path of contract WASM relative to this file
         .without_init_call()
         .with_signer(signer) // Signer is the account that is deploying the contract
         .send_to(&network)

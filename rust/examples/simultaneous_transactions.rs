@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{AccountId, NetworkConfig, Signer, Transaction};
+use near_api::{AccountId, NetworkConfig, Signer, Transaction};
 use near_crypto::SecretKey;
 use near_primitives::action::FunctionCallAction;
 use near_primitives::transaction::Action;
@@ -15,7 +15,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let network = NetworkConfig::testnet();
 

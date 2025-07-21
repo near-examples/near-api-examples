@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{AccountId, NetworkConfig, Signer, Transaction};
+use near_api::{AccountId, NetworkConfig, Signer, Transaction};
 use near_crypto::SecretKey;
 use near_primitives::action::{FunctionCallAction, TransferAction};
 use near_primitives::transaction::Action;
@@ -14,7 +14,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -22,7 +22,7 @@ async fn main() {
     // Prepare the actions
     let call_action = Action::FunctionCall(Box::new(FunctionCallAction {
         method_name: "increment".to_string(),
-        args: vec![],
+        args: serde_json::json!({}).to_string().into_bytes(),
         gas: 30_000_000_000_000,
         deposit: 0,
     }));
