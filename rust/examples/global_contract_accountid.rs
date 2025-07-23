@@ -1,5 +1,6 @@
 use dotenv::from_filename;
 use std::str::FromStr;
+use std::time::{SystemTime, UNIX_EPOCH};
 use near_api::*;
 use near_crypto::SecretKey;
 use near_primitives::views::FinalExecutionOutcomeView;
@@ -22,21 +23,46 @@ async fn main() {
     // and return the final execution outcome
     let result: FinalExecutionOutcomeView = Contract::deploy_global_contract_code(global_code)
         .as_account_id(global_account_id.clone())
-        .with_signer(global_signer)
+        .with_signer(global_signer.clone())
         .send_to_testnet()
         .await.unwrap();
 
     println!("{:?}", result);
+
+    // Create a .testnet account with private key
+    // Generate a new account ID based on the current timestamp
+    let new_account_id: AccountId = format!(
+        "{}.testnet",
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_millis()
+    )
+    .parse()
+    .unwrap();
+
+    let private_key = signer::generate_secret_key().unwrap();
+    let create_account_result = Account::create_account(new_account_id.clone())
+        .fund_myself(
+            global_account_id.clone(),
+            NearToken::from_millinear(100), // Initial balance for new account in yoctoNEAR
+        )
+        .public_key(private_key.public_key()).unwrap()
+        .with_signer(global_signer.clone()) // Signer is the account that is creating the new account
+        .send_to_testnet()
+        .await
+        .unwrap();
+
+    println!("{:?}", create_account_result);
 
     // Prepare a transaction to deploy a contract to the provided account using a mutable account-id reference to the code from the global contract code storage.
     // This is useful for deploying contracts that are meant to be used by multiple accounts or for creating a contract that can be updated later.
     //
     // Please note that you have to trust the account-id that you are providing. As the code is mutable, the owner of the referenced account can
     // change the code at any time which might lead to unexpected behavior or malicious activity.
-    let my_account_id: AccountId = "my-contract.testnet".parse().unwrap();
-    let my_signer = Signer::new(Signer::from_ledger()).unwrap();
+    let my_signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
-    let result: FinalExecutionOutcomeView = Contract::deploy(my_account_id)
+    let result: FinalExecutionOutcomeView = Contract::deploy(new_account_id)
         .use_global_account_id(global_account_id)
         .without_init_call()
         .with_signer(my_signer)
