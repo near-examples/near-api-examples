@@ -1,12 +1,21 @@
+use dotenv::from_filename;
+use std::str::FromStr;
 use near_api::*;
+use near_crypto::SecretKey;
 use near_primitives::views::FinalExecutionOutcomeView;
 
 /// Example deploying a contract to the global contract code storage as hash
 #[tokio::main]
 async fn main() {
-    let account_id: AccountId = "my-account.testnet".parse().unwrap();
+    // Load environment variables
+    from_filename("../.env").unwrap();
+    let private_key_string = std::env::var("PRIVATE_KEY").unwrap();
+    let account_id_string = std::env::var("ACCOUNT_ID").unwrap();
+    let private_key = SecretKey::from_str(&private_key_string).unwrap();
+
+    let account_id: AccountId = account_id_string.parse().unwrap();
     let code = std::fs::read("../contracts/contract.wasm").unwrap();
-    let signer = Signer::new(Signer::from_ledger()).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     // Deploy the global contract code using a hash
     // This will deploy the contract to the global contract hash
