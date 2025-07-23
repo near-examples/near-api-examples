@@ -5,7 +5,7 @@ use near_primitives::views::FinalExecutionOutcomeView;
 #[tokio::main]
 async fn main() {
     let account_id: AccountId = "my-account.testnet".parse().unwrap();
-    let code = std::fs::read("../../contracts/contract.wasm").unwrap();
+    let code = std::fs::read("../contracts/contract.wasm").unwrap();
     let signer = Signer::new(Signer::from_ledger()).unwrap();
 
     // Deploy the global contract code using a hash

@@ -5,7 +5,7 @@ use near_primitives::views::FinalExecutionOutcomeView;
 #[tokio::main]
 async fn main() {
     let global_account_id: AccountId = "nft-contract.testnet".parse().unwrap();
-    let global_code = std::fs::read("../../contracts/contract.wasm").unwrap();
+    let global_code = std::fs::read("../contracts/contract.wasm").unwrap();
     let global_signer = Signer::new(Signer::from_ledger()).unwrap();
 
     // Deploy the global contract code using the account ID `nft-contract.testnet`
