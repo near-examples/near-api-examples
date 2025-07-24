@@ -21,7 +21,7 @@ async fn main() {
     // Deploy the global contract code using a hash
     // This will deploy the contract to the global contract hash
     // and return the final execution outcome
-    let result: FinalExecutionOutcomeView = Contract::deploy_global_contract_code(code)
+    let result: FinalExecutionOutcomeView = Contract::deploy_global_contract_code(code.clone())
         .as_hash()
         .with_signer(account_id.clone(), signer.clone())
         .send_to_testnet()
@@ -30,8 +30,7 @@ async fn main() {
     println!("{:?}", result);
 
     // Deployed global contract's hash
-    let account_info = Account(account_id.clone()).view().fetch_from_testnet().await.unwrap();
-    let global_hash = account_info.data.global_contract_hash;
+    let global_hash = near_primitives::hash::CryptoHash::hash_bytes(&code);
     println!("Global contract hash: {:?}", global_hash);
 
     // Create a .testnet account with private key
@@ -64,7 +63,7 @@ async fn main() {
     let my_signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let result: FinalExecutionOutcomeView = Contract::deploy(new_account_id)
-        .use_global_hash(global_hash.unwrap().into())
+        .use_global_hash(global_hash.into())
         .without_init_call()
         .with_signer(my_signer)
         .send_to_testnet()
