@@ -9,6 +9,7 @@
     "@near-js/tokens": "^2.2.4",
     "@near-js/transactions": "^2.2.4",
     "@near-js/utils": "^2.2.4",
+    "@noble/hashes": "^1.8.0",
     "borsh": "2.0.0",
     "bs58": "^6.0.0",
     "dotenv": "^16.4.7",
