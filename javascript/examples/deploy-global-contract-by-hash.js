@@ -7,6 +7,7 @@ import bs58 from "bs58";
 import dotenv from "dotenv";
 import { KeyPair } from "@near-js/crypto";
 import { NEAR } from "@near-js/tokens";
+import { sha256 } from "@noble/hashes/sha256";
 
 dotenv.config({ path: "../.env" });
 
@@ -28,16 +29,18 @@ const wasm = readFileSync("../contracts/contract.wasm");
 const deployResult = await deployer.deployGlobalContract(wasm, "codeHash");
 
 console.log(deployResult);
+await provider.viewTransactionStatus(deployResult.transaction.hash, deployer.accountId, 'FINAL');
 
-const { hash } = await deployer.getContractCode();
+const hash = bs58.encode(sha256(wasm));
 
 const key = KeyPair.fromRandom("ed25519");
 const consumerAccountId = `${Date.now()}.${deployer.accountId}`;
-await deployer.createAccount(
+const { transaction } = await deployer.createAccount(
   consumerAccountId,
   key.getPublicKey(),
   NEAR.toUnits("0.1")
 );
+await provider.viewTransactionStatus(transaction.hash, deployer.accountId, 'FINAL');
 console.log("Consumer", consumerAccountId);
 const consumer = new Account(
   consumerAccountId,
@@ -45,9 +48,11 @@ const consumer = new Account(
   new KeyPairSigner(key)
 );
 
-await consumer.useGlobalContract({
+const useResult = await consumer.useGlobalContract({
   codeHash: bs58.decode(hash),
 });
+console.log(useResult);
+await provider.viewTransactionStatus(useResult.transaction.hash, consumer.accountId, 'FINAL');
 
 const contract = await consumer.getContractCode();
 console.log("Size", contract.code.length, "Hash", contract.hash);
