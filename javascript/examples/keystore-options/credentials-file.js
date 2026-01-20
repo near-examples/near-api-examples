@@ -1,19 +1,14 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { NearToken } from "@near-js/tokens";
-
-const NEAR = new NearToken();
+import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 import fs from "fs";
 
 // Load environment variables
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Fetch the private key from a credentials file
-const credentialsPath = "../credentials-file.json"; // Path relative to the working directory
-const credentials = JSON.parse(fs.readFileSync(credentialsPath));
+const credentials = JSON.parse(fs.readFileSync("../credentials-file.json"));
 
 // Create a signer from the private key
 const signer = KeyPairSigner.fromSecretKey(credentials.private_key);
@@ -28,10 +23,10 @@ const accountId = process.env.ACCOUNT_ID;
 const account = new Account(accountId, provider, signer);
 
 // Test the signer by transferring NEAR
-const sendTokensResult = await account.transferToken(
-  NEAR,
-  NEAR.toUnits("0.1"),
-  "receiver-account.testnet"
-);
+const sendTokensResult = await account.transfer({
+  token: NEAR,
+  amount: NEAR.toUnits("0.1"),
+  receiverId: "receiver-account.testnet"
+});
 
 console.log(sendTokensResult);

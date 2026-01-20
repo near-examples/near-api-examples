@@ -1,40 +1,48 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
+import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
 
-import dotenv from "dotenv";
-
-dotenv.config({ path: "../.env" });
-
-// Create a connection to testnet RPC
+// Create a testnet provider
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-const contractId = "guestbook.near-examples.testnet";
-
-// Make a read-only function call
-const totalMessages = await provider.callFunction(
-  contractId,
-  "total_messages",
-  {}
-);
-
-console.log({ totalMessages });
-
 // Create a signer from a private key string
-const privateKey = process.env.PRIVATE_KEY;
+const privateKey = "ed25519:5nMxVjR3idXu9TiKLw69SxAfoBuHuJJ2uozamfwsrdoKBwmkXTJWf9LDrrwbJ7nfLb8e8Ja7AtUihYbypATWe2iw";
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create an account object
-const accountId = process.env.ACCOUNT_ID;
+const accountId = "gain-adult-structure.testnet";
 const account = new Account(accountId, provider, signer); // example-account.testnet
 
-// Make a function call that modifies state
-const result = await account.callFunction({
-  contractId: contractId,
-  methodName: "add_message",
-  args: { text: "Hello, world!" },
+// First call, with ecdsa signature
+const ecdsa = await account.callFunction({
+  contractId: 'v1.signer-prod.testnet',
+  methodName: "sign",
+  args: {
+    request: {
+      payload_v2: { 'Ecdsa': '5f3f680429798f95c31a6176ed29322539573459560affee1ac39944a90dd191' },
+      path: 'test',
+      domain_id: 0
+    }
+  },
+  deposit: '1',
+  gas: '30000000000000',
 });
 
-console.log({ result });
+console.log({ ecdsa });
+
+// Second call, with eddsa signature
+const eddsa = await account.callFunction({
+  contractId: 'v1.signer-prod.testnet',
+  methodName: "sign",
+  args: {
+    request: {
+      payload_v2: { "Eddsa": "01000103f4c2920c126179e614afd2dcfddf71f31d32267198bbfbeedf49e6fdf393cb0cdfedba60c362cbfa11805184949096d8094686429b80c44717ebe71928e51f0b0000000000000000000000000000000000000000000000000000000000000000b67870443c1f6737846e916a7209ad656d9f218d0daff513d4caaadb2ef6ce4401020200010c0200000000ca9a3b00000000" },
+      path: 'test',
+      domain_id: 1
+    }
+  },
+  deposit: '1',
+  gas: '30000000000000',
+});
+
+console.log({ eddsa });

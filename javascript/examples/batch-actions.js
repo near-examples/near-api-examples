@@ -1,15 +1,5 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { actionCreators } from "@near-js/transactions";
-import { NEAR } from "@near-js/tokens";
-import dotenv from "dotenv";
-
-dotenv.config({ path: "../.env" });
-
-// Create a signer from a private key string
-const privateKey = process.env.PRIVATE_KEY;
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+import dotenv from "dotenv"
+import { Account, JsonRpcProvider, KeyPairSigner, actions, teraToGas, nearToYocto } from "near-api-js";
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -17,15 +7,16 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const accountId = process.env.ACCOUNT_ID;
-const account = new Account(accountId, provider, signer); // example-account.testnet
+dotenv.config(); // Loads .env
+const signer = KeyPairSigner.fromSecretKey(process.env.PRIVATE_KEY); // ed25519:5Fg2...
+const account = new Account(process.env.ACCOUNT_ID, provider, signer); // example-account.testnet
 
 // Send the batch of actions
 const batchActionsResult = await account.signAndSendTransaction({
   receiverId: "counter.near-examples.testnet",
   actions: [
-    actionCreators.functionCall("increment", {}, "30000000000000", 0),
-    actionCreators.transfer(NEAR.toUnits("0.1"))
+    actions.functionCall("increment", {}, teraToGas(30), 0),
+    actions.transfer(nearToYocto("0.001"))
   ],
 });
 

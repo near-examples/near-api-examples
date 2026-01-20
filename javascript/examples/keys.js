@@ -1,12 +1,9 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { KeyPair } from "@near-js/crypto";
-import { NEAR } from "@near-js/tokens";
+import { Account, JsonRpcProvider, KeyPairSigner, KeyPair } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const accountId = process.env.ACCOUNT_ID;
 

@@ -1,12 +1,9 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPair } from "@near-js/crypto";
-import { KeyPairSigner } from "@near-js/signers";
-import { NEAR } from "@near-js/tokens";
+import { Account, JsonRpcProvider, KeyPair, KeyPairSigner } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;
@@ -28,7 +25,7 @@ const newAccountId = Date.now() + ".testnet";
 const keyPair = KeyPair.fromRandom("ed25519");
 const publicKey = keyPair.getPublicKey().toString();
 
-await account.createTopLevelAccount(
+await account.createAccount(
   newAccountId,
   publicKey,
   NEAR.toUnits("0")

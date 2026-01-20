@@ -1,11 +1,9 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider, FailoverRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { NEAR } from "@near-js/tokens";
+import { Account, JsonRpcProvider, FailoverRpcProvider, KeyPairSigner } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Create a signer from a private key string
 const privateKey = process.env.PRIVATE_KEY;

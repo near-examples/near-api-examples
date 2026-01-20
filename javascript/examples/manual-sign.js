@@ -1,13 +1,9 @@
-import { JsonRpcProvider } from "@near-js/providers";
-import { Account } from "@near-js/accounts";
-import { KeyPairSigner } from "@near-js/signers";
-import { actionCreators, createTransaction } from "@near-js/transactions";
-import { baseDecode } from "@near-js/utils";
-import { NEAR } from "@near-js/tokens";
+import { JsonRpcProvider, Account, KeyPairSigner, actionCreators, createTransaction, baseDecode } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const accountId = process.env.ACCOUNT_ID;
 
@@ -20,43 +16,8 @@ const provider = new JsonRpcProvider({
 const privateKey = process.env.PRIVATE_KEY;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
-// We only need to know the public key of the signer
+// **We only need to know the public key of the signer**
 const signerPublicKey = await signer.getPublicKey();
-
-// We create a transaction manually
-
-// 1. Get the nonce of the key
-const accessKey = await provider.viewAccessKey(accountId, signerPublicKey);
-const nonce = ++accessKey.nonce;
-
-// 2. Get a recent block hash
-const recentBlockHash = baseDecode(accessKey.block_hash);
-
-// 3. Construct the transaction
-const actions = [actionCreators.transfer(NEAR.toUnits("0.1"))];
-
-const transaction = createTransaction(
-  accountId,
-  signerPublicKey,
-  "receiver-account.testnet",
-  nonce,
-  actions,
-  recentBlockHash
-);
-
-// Sign and send
-const [txHash, signedTransaction] = await signer.signTransaction(transaction);
-console.log(Buffer.from(txHash).toString("hex"));
-
-// Send transaction
-const sendTransactionResult = await provider.sendTransaction(signedTransaction);
-console.log(sendTransactionResult);
-
-
-/**
- * We can also simply instantiate an account object (that does not require a signer)
- * and use let it construct the transaction for us.
- */
 
 // 1. Instantiate account
 const account = new Account(accountId, provider);
