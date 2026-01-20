@@ -5,3 +5,5 @@ rust/target/
 rust/Cargo.lock
 javascript/node_modules/
 javascript/package-lock.json
+.vscode
+.tmp

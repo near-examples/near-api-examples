@@ -1,19 +1,8 @@
 {
   "type": "module",
   "dependencies": {
-    "@near-js/accounts": "^2.3.0",
-    "@near-js/crypto": "^2.3.0",
-    "@near-js/keystores-node": "^2.3.0",
-    "@near-js/providers": "^2.3.0",
-    "@near-js/signers": "^2.3.0",
-    "@near-js/tokens": "^2.3.0",
-    "@near-js/transactions": "^2.3.0",
-    "@near-js/utils": "^2.3.0",
-    "@noble/hashes": "^1.8.0",
-    "borsh": "2.0.0",
-    "bs58": "^6.0.0",
     "dotenv": "^16.4.7",
-    "js-sha256": "^0.11.0",
+    "near-api-js": "^7.0.0",
     "near-seed-phrase": "^0.2.1"
   },
   "scripts": {
@@ -40,6 +29,6 @@
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
     "tokens-balance": "node examples/tokens-balance.js",
     "utils": "node examples/utils.js",
-    "verify-signature": "node examples/verify-signature/verify-signature.js"
+    "verify-signature": "node examples/verify-signature.js"
   }
 }

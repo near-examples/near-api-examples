@@ -1,5 +1,6 @@
-import { USDT } from "@near-js/tokens/testnet";
-import { NEAR } from "@near-js/tokens";
+import { NEAR } from "near-api-js/tokens";
+import { USDT } from "near-api-js/tokens/testnet";
+import { yoctoToNear, nearToYocto, gigaToGas, teraToGas } from "near-api-js";
 
 // Convert NEAR amount into yoctoNEAR
 const amountInYoctoNear = NEAR.toUnits("0.1");

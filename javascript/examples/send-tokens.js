@@ -1,8 +1,6 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { FungibleToken, NEAR } from "@near-js/tokens";
-import { USDT } from "@near-js/tokens/testnet";
+import { Account, JsonRpcProvider, KeyPairSigner, FungibleToken } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
+import { USDT } from "near-api-js/tokens/testnet";
 
 import dotenv from "dotenv";
 
@@ -12,7 +10,7 @@ const REF = new FungibleToken("ref.fakes.testnet", {
 });
 
 // Load environment variables
-dotenv.config({ path: "../.env" }); // Path relative to the working directory
+dotenv.config(); // Path relative to the working directory
 const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
 

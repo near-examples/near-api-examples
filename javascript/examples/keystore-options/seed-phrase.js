@@ -1,15 +1,10 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { parseNearAmount } from "@near-js/utils";
-import { parseSeedPhrase } from "near-seed-phrase";
 import dotenv from "dotenv";
-import { NearToken } from "@near-js/tokens";
-
-const NEAR = new NearToken();
+import { NEAR } from "near-api-js/tokens";
+import { parseSeedPhrase } from "near-api-js/seed-phrase";
+import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
 
 // Load environment variables
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Create a keystore and add the key pair via a seed phrase
 const seedPhrase = process.env.SEED_PHRASE; // "royal success river ..."
@@ -24,14 +19,13 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const accountId = process.env.ACCOUNT_ID;
-const account = new Account(accountId, provider, signer);
+const account = new Account(process.env.ACCOUNT_ID, provider, signer);
 
 // Test the signer by transferring NEAR
-const sendTokensResult = await account.transferToken(
-  NEAR,
-  NEAR.toUnits("0.1"),
-  "receiver-account.testnet"
-);
+const sendTokensResult = await account.transfer({
+  token: NEAR,
+  amount: NEAR.toUnits("0.1"),
+  receiverId: "receiver-account.testnet"
+});
 
 console.log(sendTokensResult);

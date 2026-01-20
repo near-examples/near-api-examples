@@ -1,11 +1,9 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
+import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
 
 import dotenv from "dotenv";
 import fs from "fs";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({

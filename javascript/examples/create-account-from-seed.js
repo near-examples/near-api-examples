@@ -1,11 +1,9 @@
-import { Account } from "@near-js/accounts";
-import { JsonRpcProvider } from "@near-js/providers";
-import { KeyPairSigner } from "@near-js/signers";
-import { NEAR } from "@near-js/tokens";
-import { generateSeedPhrase } from "near-seed-phrase";
+import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
+import { NEAR } from "near-api-js/tokens";
+import { generateSeedPhrase } from "near-api-js/seed-phrase";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -17,11 +15,11 @@ const signer = KeyPairSigner.fromSecretKey(process.env.PRIVATE_KEY);
 const account = new Account(process.env.ACCOUNT_ID, provider, signer);
 
 // Generate a new key
-const { seedPhrase, publicKey, secretKey } = generateSeedPhrase();
-console.log(`Created key ${secretKey} with seed phrase ${seedPhrase}`);
+const { seedPhrase, keyPair } = generateSeedPhrase();
+console.log(`Created key ${keyPair.toString()} with seed phrase ${seedPhrase}`);
 
 await account.createTopLevelAccount(
   `acc-${Date.now()}.testnet`,
-  publicKey,
+  keyPair.getPublicKey(),
   NEAR.toUnits("0.1")
 );
