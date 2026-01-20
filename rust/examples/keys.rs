@@ -1,5 +1,5 @@
 use dotenv::from_filename;
-use near_api::prelude::{Account, AccountId, NetworkConfig, Signer};
+use near_api::{signer, Account, AccountId, NetworkConfig, Signer};
 use near_crypto::SecretKey;
 use near_primitives::account::{AccessKeyPermission, FunctionCallPermission};
 use std::str::FromStr;
@@ -14,7 +14,7 @@ async fn main() {
     let account = Account(account_id.clone());
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::secret_key(private_key)).unwrap();
+    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -23,20 +23,16 @@ async fn main() {
     println!("{:?}", keys);
 
     // Add full access key
-    let (new_full_private_key, txn) = account
-        .add_key(AccessKeyPermission::FullAccess)
-        .new_keypair() // Generate a new keypair
-        .generate_secret_key() // Get the private key from the keypair
-        .unwrap();
-
-    let new_full_public_key = new_full_private_key.public_key().to_string();
-    println!("{:?}", new_full_public_key);
-
-    let add_full_key_result = txn
+    let new_full_private_key = signer::generate_secret_key().unwrap(); // Get the private key from the keypair
+    let add_full_key_result = account
+        .add_key(AccessKeyPermission::FullAccess, new_full_private_key.public_key())
         .with_signer(signer.clone())
         .send_to(&network)
         .await
         .unwrap();
+
+    let new_full_public_key = new_full_private_key.public_key().to_string();
+    println!("{:?}", new_full_public_key);
     println!("{:?}", add_full_key_result);
 
     // Add function call access key
@@ -46,20 +42,16 @@ async fn main() {
         method_names: vec!["example_method".to_string()], // Methods this key is allowed to call
     });
 
-    let (new_function_private_key, txn) = account
-        .add_key(new_function_call_key)
-        .new_keypair()
-        .generate_secret_key()
-        .unwrap();
-
-    let new_function_public_key = new_function_private_key.public_key().to_string();
-    println!("{:?}", new_function_public_key);
-
-    let add_function_key_result = txn
+    let new_function_private_key = signer::generate_secret_key().unwrap();
+    let add_function_key_result = account
+        .add_key(new_function_call_key, new_function_private_key.public_key())
         .with_signer(signer.clone())
         .send_to(&network)
         .await
         .unwrap();
+
+    let new_function_public_key = new_function_private_key.public_key().to_string();
+    println!("{:?}", new_function_public_key);
     println!("{:?}", add_function_key_result);
 
     // Delete full access key

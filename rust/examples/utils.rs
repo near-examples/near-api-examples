@@ -1,4 +1,4 @@
-use near_api::prelude::NearToken;
+use near_api::NearToken;
 
 const ONE_NEAR: NearToken = NearToken::from_near(1);
 
