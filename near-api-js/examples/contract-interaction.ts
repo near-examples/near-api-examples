@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Account, JsonRpcProvider, teraToGas, KeyPairString } from "near-api-js";
+import { Account, JsonRpcProvider, teraToGas, KeyPairString, nearToYocto } from "near-api-js";
 
 // Create an account object
 dotenv.config();
@@ -29,4 +29,5 @@ await account.callFunction({
   methodName: "add_message",
   args: { text: "Hello!" },
   gas: teraToGas('30'),
+  deposit: nearToYocto('0.1'),
 });

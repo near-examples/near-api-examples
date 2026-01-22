@@ -1,4 +1,6 @@
-{
+import { AbiRoot } from "near-api-js";
+
+const abi = {
   "schema_version": "0.4.0",
   "metadata": {
     "name": "contract",
@@ -74,4 +76,6 @@
       }
     }
   }
-}
+} as const satisfies AbiRoot;
+
+export default abi;

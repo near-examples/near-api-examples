@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import { NEAR } from "near-api-js/tokens";
-import { Account, JsonRpcProvider, KeyPair, KeyPairString } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString, nearToYocto } from "near-api-js";
 
 dotenv.config();
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
@@ -22,7 +21,7 @@ const publicKey: string = keyPair.getPublicKey().toString();
 await account.createAccount({
   newAccountId,
   publicKey,
-  nearToTransfer: NEAR.toUnits("0")
+  nearToTransfer: nearToYocto("0")
 });
 
 console.log(`Created ${newAccountId} with private key ${keyPair.toString()}`);

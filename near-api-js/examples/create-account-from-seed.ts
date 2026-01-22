@@ -1,5 +1,4 @@
-import { Account, JsonRpcProvider, KeyPairString } from "near-api-js";
-import { NEAR } from "near-api-js/tokens";
+import { Account, JsonRpcProvider, KeyPairString, nearToYocto } from "near-api-js";
 import { generateSeedPhrase } from "near-api-js/seed-phrase";
 import dotenv from "dotenv";
 
@@ -22,5 +21,5 @@ console.log(`Created key ${keyPair.toString()} with seed phrase ${seedPhrase}`);
 await account.createAccount({
   newAccountId: `acc-${Date.now()}.testnet`,
   publicKey: keyPair.getPublicKey().toString(),
-  nearToTransfer: NEAR.toUnits("0.1")
+  nearToTransfer: nearToYocto("0.1")
 });

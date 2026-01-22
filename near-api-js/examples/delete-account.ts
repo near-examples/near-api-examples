@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import { Account, JsonRpcProvider, KeyPair, KeyPairString } from "near-api-js";
-import { NEAR } from "near-api-js/tokens";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString, nearToYocto } from "near-api-js";
 
 dotenv.config();
 const accountId: string = process.env.ACCOUNT_ID!;
@@ -20,7 +19,7 @@ const deleteMe: string = `${Date.now()}.testnet`;
 await master.createAccount({
   newAccountId: deleteMe,
   publicKey: keyPair.getPublicKey().toString(),
-  nearToTransfer: NEAR.toUnits("0.1")
+  nearToTransfer: nearToYocto("0.1")
 });
 
 // Create an account object for the new account with corresponding signer
