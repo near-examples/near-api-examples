@@ -1,4 +1,4 @@
-import { Account, JsonRpcProvider, KeyPairSigner, FungibleToken } from "near-api-js";
+import { Account, JsonRpcProvider, FungibleToken } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
 import { USDT } from "near-api-js/tokens/testnet";
 
@@ -10,12 +10,9 @@ const REF = new FungibleToken("ref.fakes.testnet", {
 });
 
 // Load environment variables
-dotenv.config(); // Path relative to the working directory
+dotenv.config();
 const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
-
-// Create a signer from a private key string
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -23,7 +20,7 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const account = new Account(accountId, provider, signer); // example-account.testnet
+const account = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // ------- Send NEAR tokens to another account -------
 const sendNearTokensResult = await account.transfer(

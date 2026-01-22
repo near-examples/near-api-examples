@@ -4,7 +4,7 @@ import { NEAR } from "near-api-js/tokens";
 import dotenv from "dotenv";
 
 dotenv.config();
-
+const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a provider for testnet RPC
@@ -13,8 +13,7 @@ const provider = new JsonRpcProvider({
 });
 
 // Assume there is a signer that will sign the transaction
-const privateKey = process.env.PRIVATE_KEY;
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
+const signer = KeyPairSigner.fromSecretKey(privateKey);
 
 // **We only need to know the public key of the signer**
 const signerPublicKey = await signer.getPublicKey();

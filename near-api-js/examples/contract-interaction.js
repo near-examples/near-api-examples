@@ -1,17 +1,14 @@
-import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
+import { Account, JsonRpcProvider } from "near-api-js";
 
 // Create a testnet provider
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-// Create a signer from a private key string
-const privateKey = "ed25519:5nMxVjR3idXu9TiKLw69SxAfoBuHuJJ2uozamfwsrdoKBwmkXTJWf9LDrrwbJ7nfLb8e8Ja7AtUihYbypATWe2iw";
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
-
 // Create an account object
+const privateKey = "ed25519:5nMxVjR3idXu9TiKLw69SxAfoBuHuJJ2uozamfwsrdoKBwmkXTJWf9LDrrwbJ7nfLb8e8Ja7AtUihYbypATWe2iw";
 const accountId = "gain-adult-structure.testnet";
-const account = new Account(accountId, provider, signer); // example-account.testnet
+const account = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // First call, with ecdsa signature
 const ecdsa = await account.callFunction({

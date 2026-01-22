@@ -1,10 +1,10 @@
-import { Account, JsonRpcProvider, KeyPairSigner, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
 
 import dotenv from "dotenv";
 
 dotenv.config();
-
+const privateKey = process.env.PRIVATE_KEY;
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet RPC
@@ -25,7 +25,6 @@ console.log(accessKeys);
 
 
 // Create a signer and add it to the Account
-const privateKey = process.env.PRIVATE_KEY;
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
 
 account.setSigner(signer);

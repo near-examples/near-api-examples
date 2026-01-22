@@ -1,10 +1,5 @@
 import { JsonRpcProvider, yoctoToNear } from "near-api-js";
 
-import dotenv from "dotenv";
-
-// Load environment variables
-dotenv.config(); // Path relative to the working directory
-
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",

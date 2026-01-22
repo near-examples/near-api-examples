@@ -1,22 +1,19 @@
-import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
+import { Account, JsonRpcProvider } from "near-api-js";
 
 import dotenv from "dotenv";
 import fs from "fs";
 
 dotenv.config();
+const privateKey = process.env.PRIVATE_KEY;
+const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
   url: "https://test.rpc.fastnear.com",
 });
 
-// Create a signer from a private key string
-const privateKey = process.env.PRIVATE_KEY;
-const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
-
 // Create an account object
-const accountId = process.env.ACCOUNT_ID;
-const account = new Account(accountId, provider, signer); // example-account.testnet
+const account = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // Deploy a contract to the account
 const result = await account.deployContract(
