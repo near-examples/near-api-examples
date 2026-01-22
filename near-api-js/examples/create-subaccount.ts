@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import { NEAR } from "near-api-js/tokens";
-import { Account, JsonRpcProvider, KeyPairSigner, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString } from "near-api-js";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -15,9 +15,9 @@ const provider = new JsonRpcProvider({
 const account = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // Generate a new account prefix and key pair
-const prefix = Date.now().toString();
+const prefix: string = Date.now().toString();
 const keyPair = KeyPair.fromRandom("ed25519");
-const publicKey = keyPair.getPublicKey().toString();
+const publicKey: string = keyPair.getPublicKey().toString();
 
 await account.createSubAccount({
   accountOrPrefix: prefix,    // prefix for the sub account (e.g. sub.near.testnet)
@@ -25,4 +25,4 @@ await account.createSubAccount({
   nearToTransfer: NEAR.toUnits("0") // Initial balance for new account in yoctoNEAR
 });
 
-console.log(`Created ${prefix}.${accountId} with private key ${keyPair.toString()}`)
+console.log(`Created ${prefix}.${accountId} with private key ${keyPair.toString()}`);

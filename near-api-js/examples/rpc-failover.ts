@@ -1,11 +1,10 @@
-import { Account, JsonRpcProvider, FailoverRpcProvider } from "near-api-js";
+import { Account, JsonRpcProvider, FailoverRpcProvider, KeyPairString } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
-
 import dotenv from "dotenv";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Set up a new FailoverRpcProvider with two JSON RPC providers
 const jsonProviders = [
@@ -26,11 +25,9 @@ const provider = new FailoverRpcProvider(jsonProviders); // Create a FailoverRpc
 const account = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // Test the signer with transferring 1 NEAR
-const sendTokensResult = await account.transfer(
-  {
-    token: NEAR,
-    amount: NEAR.toUnits("0.1"), // Amount of NEAR being sent
-    receiverId: "receiver-account.testnet", // Receiver account ID
-  }
-);
+const sendTokensResult = await account.transfer({
+  token: NEAR,
+  amount: NEAR.toUnits("0.1"), // Amount of NEAR being sent
+  receiverId: "receiver-account.testnet", // Receiver account ID
+});
 console.log(sendTokensResult);

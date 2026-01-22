@@ -1,7 +1,6 @@
 import { Account, JsonRpcProvider, KeyPairSigner } from "near-api-js";
-import { UnencryptedFileSystemKeyStore } from "@near-js/keystores-node"
+import { UnencryptedFileSystemKeyStore } from "@near-js/keystores-node";
 import { NEAR } from "near-api-js/tokens";
-
 import dotenv from "dotenv";
 import { homedir } from "os";
 import path from "path";
@@ -10,10 +9,10 @@ import path from "path";
 dotenv.config();
 
 // Create a keystore that stores keys in the `~/.near-credentials`
-const credentialsPath = path.join(homedir(), ".near-credentials");
+const credentialsPath: string = path.join(homedir(), ".near-credentials");
 const myKeyStore = new UnencryptedFileSystemKeyStore(credentialsPath);
 
-const accountId = process.env.ACCOUNT_ID;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({

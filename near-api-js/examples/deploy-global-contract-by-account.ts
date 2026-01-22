@@ -1,12 +1,11 @@
-import { Account, JsonRpcProvider, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
 import { readFileSync } from "fs";
-
 import dotenv from "dotenv";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -17,13 +16,13 @@ const provider = new JsonRpcProvider({
 const deployer = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // Path of contract WASM relative to the working directory
-const wasm = readFileSync("../contracts/contract.wasm");
+const wasm: Uint8Array = new Uint8Array(readFileSync("../contracts/contract.wasm"));
 const deployResult = await deployer.deployGlobalContract(wasm, "accountId");
 
 console.log(deployResult);
 
 const key = KeyPair.fromRandom("ed25519");
-const consumerAccountId = `${Date.now()}.${deployer.accountId}`;
+const consumerAccountId: string = `${Date.now()}.${deployer.accountId}`;
 await deployer.createAccount({
   newAccountId: consumerAccountId,
   publicKey: key.getPublicKey().toString(),
@@ -33,7 +32,7 @@ console.log("Consumer", consumerAccountId);
 const consumer = new Account(
   consumerAccountId,
   provider,
-  key.toString()
+  key.toString() as KeyPairString
 );
 
 await consumer.useGlobalContract({ accountId: deployer.accountId });

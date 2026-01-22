@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-import { Account, JsonRpcProvider, KeyPairSigner, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
 
 dotenv.config();
-const accountId = process.env.ACCOUNT_ID;
-const privateKey = process.env.PRIVATE_KEY;
+const accountId: string = process.env.ACCOUNT_ID!;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const keyPair = KeyPair.fromString(privateKey);
 
 // Create a connection to testnet RPC
@@ -13,9 +13,9 @@ const provider = new JsonRpcProvider({
 });
 
 // Create a new account to be deleted
-const master = new Account(accountId, provider, privateKey)
+const master = new Account(accountId, provider, privateKey);
 
-const deleteMe = `${Date.now()}.testnet`;
+const deleteMe: string = `${Date.now()}.testnet`;
 
 await master.createAccount({
   newAccountId: deleteMe,
@@ -27,6 +27,6 @@ await master.createAccount({
 const accountToDelete = new Account(deleteMe, provider, privateKey);
 
 // Delete the account 
-const beneficiary = process.env.ACCOUNT_ID
+const beneficiary: string = process.env.ACCOUNT_ID!;
 await accountToDelete.deleteAccount(beneficiary);
 console.log(`Account ${deleteMe} was deleted`);

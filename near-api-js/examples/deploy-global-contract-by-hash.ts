@@ -1,14 +1,12 @@
-import { Account, JsonRpcProvider, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairString, baseEncode } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
 import { readFileSync } from "fs";
-import bs58 from "bs58";
-
+import { createHash } from "crypto";
 import dotenv from "dotenv";
-import { sha256 } from "@noble/hashes/sha256";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -19,34 +17,34 @@ const provider = new JsonRpcProvider({
 const deployer = new Account(accountId, provider, privateKey); // example-account.testnet
 
 // Path of contract WASM relative to the working directory
-const wasm = readFileSync("../contracts/contract.wasm");
+const wasm: Uint8Array = new Uint8Array(readFileSync("../contracts/contract.wasm"));
 const deployResult = await deployer.deployGlobalContract(wasm, "codeHash");
 
 console.log(deployResult);
-await provider.viewTransactionStatus(deployResult.transaction.hash, deployer.accountId, 'FINAL');
+await provider.viewTransactionStatus({ txHash: deployResult.transaction.hash, accountId: deployer.accountId });
 
-const hash = bs58.encode(sha256(wasm));
+const hash: string = baseEncode(createHash('sha256').update(wasm).digest());
 
 const key = KeyPair.fromRandom("ed25519");
-const consumerAccountId = `${Date.now()}.${deployer.accountId}`;
+const consumerAccountId: string = `${Date.now()}.${deployer.accountId}`;
 const { transaction } = await deployer.createAccount({
   newAccountId: consumerAccountId,
   publicKey: key.getPublicKey().toString(),
   nearToTransfer: NEAR.toUnits("0.1")
 });
-await provider.viewTransactionStatus(transaction.hash, deployer.accountId, 'FINAL');
+await provider.viewTransactionStatus({ txHash: transaction.hash, accountId: deployer.accountId });
 console.log("Consumer", consumerAccountId);
 const consumer = new Account(
   consumerAccountId,
   provider,
-  key.toString()
+  key.toString() as KeyPairString
 );
 
 const useResult = await consumer.useGlobalContract({
-  codeHash: bs58.decode(hash),
+  codeHash: Uint8Array.from(Buffer.from(hash, 'base64')),
 });
 console.log(useResult);
-await provider.viewTransactionStatus(useResult.transaction.hash, consumer.accountId, 'FINAL');
+await provider.viewTransactionStatus({ txHash: useResult.transaction.hash, accountId: consumer.accountId });
 
 const contract = await consumer.getContractCode();
 console.log("Size", contract.code.length, "Hash", contract.hash);

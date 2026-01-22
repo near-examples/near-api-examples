@@ -1,11 +1,10 @@
-import { Account, JsonRpcProvider } from "near-api-js";
-
-import dotenv from "dotenv";
+import { Account, JsonRpcProvider, KeyPairString } from "near-api-js";
 import fs from "fs";
+import dotenv from "dotenv";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({

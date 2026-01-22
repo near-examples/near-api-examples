@@ -1,9 +1,9 @@
-import dotenv from "dotenv"
-import { Account, JsonRpcProvider, actions, teraToGas, nearToYocto } from "near-api-js";
+import dotenv from "dotenv";
+import { Account, JsonRpcProvider, actions, teraToGas, nearToYocto, KeyPairString } from "near-api-js";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -17,7 +17,7 @@ const account = new Account(accountId, provider, privateKey); // example-account
 const batchActionsResult = await account.signAndSendTransaction({
   receiverId: "counter.near-examples.testnet",
   actions: [
-    actions.functionCall("increment", {}, teraToGas(30), 0),
+    actions.functionCall("increment", {}, teraToGas("30"), 0n),
     actions.transfer(nearToYocto("0.001"))
   ],
 });

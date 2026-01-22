@@ -8,22 +8,23 @@ const provider = new JsonRpcProvider({
 });
 
 // Create an account object
-const accountId = 'influencer.testnet';
+const accountId: string = 'influencer.testnet';
 const account = new Account(accountId, provider);
 
 // ------- Fetch NEAR tokens balance -------
-const nearTokensBalanceInt = await account.getBalance(NEAR);
+const nearTokensBalanceInt: bigint = await account.getBalance(NEAR);
 console.log("NEAR: ", NEAR.toDecimal(nearTokensBalanceInt, 2));
 
 // ------- Fetch USDT tokens balance -------
-const usdtTokensBalanceInt = await account.getBalance(USDT);
+const usdtTokensBalanceInt: bigint = await account.getBalance(USDT);
 console.log("USDT: ", USDT.toDecimal(usdtTokensBalanceInt, 2));
 
 // ------- Fetch REF tokens balance in the smallest units as BigInt -------
 const REF = new FungibleToken("ref.fakes.testnet", {
   decimals: 18,
   symbol: "REF",
+  name: "REF Token",
 });
 
-const refTokensBalanceInt = await account.getBalance(REF);
+const refTokensBalanceInt: bigint = await account.getBalance(REF);
 console.log("REF: ", REF.toDecimal(refTokensBalanceInt, 2));

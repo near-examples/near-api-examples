@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-import { Account, JsonRpcProvider, teraToGas } from "near-api-js";
+import { Account, JsonRpcProvider, teraToGas, KeyPairString } from "near-api-js";
 
 // Create an account object
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a testnet provider
 const provider = new JsonRpcProvider({

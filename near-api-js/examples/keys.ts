@@ -1,11 +1,10 @@
-import { Account, JsonRpcProvider, KeyPair } from "near-api-js";
+import { Account, JsonRpcProvider, KeyPair, KeyPairSigner, KeyPairString } from "near-api-js";
 import { NEAR } from "near-api-js/tokens";
-
 import dotenv from "dotenv";
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
-const accountId = process.env.ACCOUNT_ID;
+const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
+const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a connection to testnet RPC
 const provider = new JsonRpcProvider({
@@ -13,7 +12,7 @@ const provider = new JsonRpcProvider({
 });
 
 // Query keys with the provider
-const keysProvider = await provider.viewAccessKeyList(accountId);
+const keysProvider = await provider.viewAccessKeyList({ accountId });
 console.log(keysProvider);
 
 // Create an Account object without a signer
@@ -22,7 +21,6 @@ const account = new Account(accountId, provider);
 // Query keys
 const accessKeys = await account.getAccessKeyList();
 console.log(accessKeys);
-
 
 // Create a signer and add it to the Account
 const signer = KeyPairSigner.fromSecretKey(privateKey); // ed25519:5Fg2...
@@ -44,8 +42,7 @@ await account.addFunctionCallAccessKey({
   contractId: "example-contract.testnet", // Contract this key is allowed to call (optional)
   methodNames: ["example_method"], // Methods this key is allowed to call (optional)
   allowance: NEAR.toUnits("0.25") // Gas allowance key can use to call methods (optional)
-  }
-);
+});
 
 console.log(`Added FAK ${fullKeyPair.toString()}`);
 console.log(`Added FCK ${fnKeyPair.toString()}`);
@@ -54,7 +51,7 @@ const accessKeysNew = await account.getAccessKeyList();
 console.log(accessKeysNew);
 
 // Use the new FullAccess Key to delete the Function Call Key
-const newSigner = KeyPairSigner.fromSecretKey(fullKeyPair.toString());
-account.setSigner(newSigner)
+const newSigner = KeyPairSigner.fromSecretKey(fullKeyPair.toString() as KeyPairString);
+account.setSigner(newSigner);
 await account.deleteKey(fnKeyPair.getPublicKey().toString());
 await account.deleteKey(fullKeyPair.getPublicKey().toString());
