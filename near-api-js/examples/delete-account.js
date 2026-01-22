@@ -27,5 +27,6 @@ await master.createAccount({
 const accountToDelete = new Account(deleteMe, provider, privateKey);
 
 // Delete the account 
-await accountToDelete.deleteAccount(accountId); // example-beneficiary.testnet
+const beneficiary = process.env.ACCOUNT_ID
+await accountToDelete.deleteAccount(beneficiary);
 console.log(`Account ${deleteMe} was deleted`);
