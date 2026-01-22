@@ -3,7 +3,8 @@ credentials-file.json
 .DS_Store
 rust/target/
 rust/Cargo.lock
-javascript/node_modules/
-javascript/package-lock.json
+node_modules/
+package-lock.json
+pnpm-lock.yaml
 .vscode
 .tmp
