@@ -1,13 +1,7 @@
-import { Account, JsonRpcProvider, FungibleToken } from "near-api-js";
-import { NEAR } from "near-api-js/tokens";
-import { USDT } from "near-api-js/tokens/testnet";
-
 import dotenv from "dotenv";
-
-const REF = new FungibleToken("ref.fakes.testnet", {
-  decimals: 18,
-  symbol: "REF",
-});
+import { Account, JsonRpcProvider } from "near-api-js";
+import { NEAR, FungibleToken } from "near-api-js/tokens";
+import { USDT } from "near-api-js/tokens/testnet";
 
 // Load environment variables
 dotenv.config();
@@ -27,7 +21,7 @@ const sendNearTokensResult = await account.transfer(
   {
     token: NEAR,
     amount: NEAR.toUnits("0.1"),
-    receiverId: "receiver-account.testnet"
+    receiverId: "influencer.testnet"
   }
 );
 console.log(sendNearTokensResult);
@@ -36,29 +30,38 @@ console.log(sendNearTokensResult);
 // if a user isn't registered, the transfer will fail
 // it a user is already registered, we'll just get funds back
 await USDT.registerAccount({
-  accountIdToRegister: "receiver-account.testnet",
+  accountIdToRegister: "influencer.testnet",
   fundingAccount: account,
-})
+}).catch(); // ignore errors if already registered
 
 // Use https://testnet.rhea.finance/#near|usdtt.fakes.testnet to get USDT token
 const sendUsdtTokensResult = await account.transfer(
   {
     token: USDT,
     amount: USDT.toUnits("1"), // Amount of USDT being sent
-    receiverId: "receiver-account.testnet"
+    receiverId: "influencer.testnet"
   }
 );
 console.log(sendUsdtTokensResult);
 
 // ------- Send REF tokens to another account -------
 // Use https://testnet.rhea.finance/#near|ref.fakes.testnet to get REF tokens
+const REF = new FungibleToken("ref.fakes.testnet", {
+  decimals: 18,
+  symbol: "REF",
+});
+
+await REF.registerAccount({
+  accountIdToRegister: "influencer.testnet",
+  fundingAccount: account,
+})
+
 const sendREFsResult = await account.transfer(
   {
     token: REF,
     amount: REF.toUnits("1"), // Amount of REF tokens being sent
-    receiverId: "receiver-account.testnet"
+    receiverId: "influencer.testnet"
   }
-);
+).catch(); // ignore errors if already registered
 
-// we haven't registered a receiver before sending, so it may fail
 console.log(sendREFsResult);
