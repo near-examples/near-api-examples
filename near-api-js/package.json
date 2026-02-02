@@ -27,6 +27,7 @@
     "deploy-global-contract-by-hash": "tsx examples/deploy-global-contract-by-hash.ts",
     "keys": "tsx examples/keys.ts",
     "manual-sign": "tsx examples/manual-sign.ts",
+    "meta": "tsx examples/meta.ts",
     "private-key-string": "tsx examples/keystore-options/private-key-string.ts",
     "rpc-failover": "tsx examples/rpc-failover.ts",
     "seat-price": "tsx examples/seat-price.ts",
