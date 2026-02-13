@@ -25,14 +25,7 @@ const sendNearTokensResult = await account.transfer({
 console.log(sendNearTokensResult);
 
 // ------- Send USDT tokens to another account -------
-// if a user isn't registered, the transfer will fail
-// it a user is already registered, we'll just get funds back
-await USDT.registerAccount({
-  accountIdToRegister: "influencer.testnet" as unknown as Account,
-  fundingAccount: account,
-}).catch(() => {}); // ignore errors if already registered
-
-// Use https://testnet.rhea.finance/#near|usdtt.fakes.testnet to get USDT token
+// NOTE: Use https://testnet.rhea.finance/#near|usdtt.fakes.testnet to get USDT token
 const sendUsdtTokensResult = await account.transfer({
   token: USDT,
   amount: USDT.toUnits("1"), // Amount of USDT being sent
@@ -48,11 +41,6 @@ const REF = new FungibleToken("ref.fakes.testnet", {
   name: "REF Token",
 });
 
-await REF.registerAccount({
-  accountIdToRegister: "influencer.testnet" as unknown as Account,
-  fundingAccount: account,
-});
-
 const sendREFsResult = await account.transfer({
   token: REF,
   amount: REF.toUnits("1"), // Amount of REF tokens being sent
@@ -60,3 +48,40 @@ const sendREFsResult = await account.transfer({
 }).catch(() => {}); // ignore errors if already registered
 
 console.log(sendREFsResult);
+
+// Lower level Primitives
+console.log(
+  "Is influencer.testnet registered for USDT?",
+  await USDT.isAccountRegistered({
+    accountId: "influencer.testnet",
+    provider,
+  })
+)
+
+console.log(
+  "Registering influencer.testnet for USDT",
+  await USDT.registerAccount({
+    accountIdToRegister: "influencer.testnet",
+    fundingAccount: account,
+  })
+)
+
+// ------- Sending tokens to an unregistered account will automatically register it -------
+const randomAccountId = `${Math.random().toString(36).substring(2, 15)}.testnet`;
+
+const isRegistered = await USDT.isAccountRegistered({
+    accountId: randomAccountId,
+    provider,
+  })
+
+if (isRegistered) throw new Error(`${randomAccountId} is already registered`);
+
+await account.transfer({
+  token: USDT,
+  amount: USDT.toUnits("1"),
+  receiverId: randomAccountId,
+});
+
+const randomAccount = new Account(randomAccountId, provider);
+const balance = await USDT.getBalance(randomAccount);
+console.log(`Balance of ${randomAccountId}:`, USDT.toDecimal(balance));

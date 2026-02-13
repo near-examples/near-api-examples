@@ -1,4 +1,5 @@
-import { Account, JsonRpcProvider, KeyPairString, nearToYocto } from "near-api-js";
+import { Account, JsonRpcProvider, nearToYocto } from "near-api-js";
+import type { KeyPairString } from "near-api-js";
 import { generateSeedPhrase } from "near-api-js/seed-phrase";
 import dotenv from "dotenv";
 
