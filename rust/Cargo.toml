@@ -30,3 +30,7 @@ path = "examples/signer_options/keystore.rs"
 [[example]]
 name = "seed_phrase"
 path = "examples/signer_options/seed_phrase.rs"
+
+[[example]]
+name = "rpc_auth"
+path = "examples/rpc_auth.rs"
