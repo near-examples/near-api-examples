@@ -31,10 +31,10 @@ For some of the examples, you should also set up a file named `credentials-file.
 
 ## JavaScript
 
-Enter the `javascript` directory and install the dependencies:
+Enter the `near-api-js` directory and install the dependencies:
 
 ```bash
-cd javascript
+cd near-api-js
 npm install
 ```
 
@@ -43,6 +43,8 @@ Then run the example you want to run (replace `example-name` with the name of th
 ```bash
 npm run example-name
 ```
+
+For a complete meta-transaction client and HTTP relayer using near-api-js 7, see [the meta-tx example](near-api-js/examples/meta-tx/README.md).
 
 Running credentials-directory.js requires the user to have saved their credentials to the legacy key store via the NEAR CLI.
 
