@@ -8,3 +8,7 @@ package-lock.json
 pnpm-lock.yaml
 .vscode
 .tmp
+
+# Separate credentials for the meta-transaction client and server
+.env.client
+.env.server

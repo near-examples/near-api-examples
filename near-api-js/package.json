@@ -3,8 +3,9 @@
   "dependencies": {
     "@near-js/keystores-node": "^2.5.1",
     "dotenv": "^16.4.7",
-    "near-api-js": "^7.0.0",
-    "near-seed-phrase": "^0.2.1"
+    "near-api-js": "^7.4.0",
+    "near-seed-phrase": "^0.2.1",
+    "borsh": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
@@ -36,6 +37,9 @@
     "simultaneous-transactions": "tsx examples/simultaneous-transactions.ts",
     "tokens-balance": "tsx examples/tokens-balance.ts",
     "utils": "tsx examples/utils.ts",
-    "verify-signature": "tsx examples/verify-signature.ts"
+    "verify-signature": "tsx examples/verify-signature.ts",
+    "meta-tx:server": "tsx examples/meta-tx/server.ts",
+    "meta-tx:client": "tsx examples/meta-tx/client.ts",
+    "meta-tx:test": "tsx --test examples/meta-tx/*.test.ts"
   }
 }
