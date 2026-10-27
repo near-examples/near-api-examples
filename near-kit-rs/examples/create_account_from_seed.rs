@@ -1,5 +1,5 @@
 use near_kit::signer::SecretKey;
-use near_kit::*;
+use near_kit::{Error, Gas, Near, NearToken};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

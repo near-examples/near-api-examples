@@ -11,3 +11,4 @@ pnpm-lock.yaml
 near-kit-rs/target/
 near-kit-rs/Cargo.lock
 near-kit-py/.venv/
+__pycache__/

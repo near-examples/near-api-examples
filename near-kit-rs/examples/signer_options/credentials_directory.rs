@@ -1,5 +1,5 @@
 use near_kit::signer::FileSigner;
-use near_kit::*;
+use near_kit::{Error, Near, NearToken};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

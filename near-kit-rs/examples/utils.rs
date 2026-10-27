@@ -1,4 +1,4 @@
-use near_kit::*;
+use near_kit::{Gas, NearToken};
 
 // near-kit re-exports the `near-token` and `near-gas` types
 const ONE_NEAR: NearToken = NearToken::from_near(1);

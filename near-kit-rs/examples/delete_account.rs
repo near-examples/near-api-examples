@@ -1,6 +1,6 @@
 use near_kit::signer::{InMemorySigner, SecretKey};
 use near_kit::transaction::Final;
-use near_kit::*;
+use near_kit::{Error, Near, NearToken};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
