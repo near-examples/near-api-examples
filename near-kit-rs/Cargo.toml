@@ -1,0 +1,31 @@
+[package]
+name = "near-kit-examples"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+dotenvy = "0.15"
+near-kit = { version = "0.19", features = ["mnemonic", "file-signer", "keyring"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+
+[[example]]
+name = "private_key_string"
+path = "examples/signer_options/private_key_string.rs"
+
+[[example]]
+name = "seed_phrase"
+path = "examples/signer_options/seed_phrase.rs"
+
+[[example]]
+name = "credentials_file"
+path = "examples/signer_options/credentials_file.rs"
+
+[[example]]
+name = "credentials_directory"
+path = "examples/signer_options/credentials_directory.rs"
+
+[[example]]
+name = "keystore"
+path = "examples/signer_options/keystore.rs"

@@ -1,6 +1,6 @@
 # near-api-examples
 
-This repository contains examples of how to use the NEAR API in both JavaScript and Rust. These examples are referenced in the NEAR documentation.
+This repository contains examples of how to use the NEAR API in JavaScript, Rust and Python. These examples are referenced in the NEAR documentation.
 
 ## Setup
 
@@ -55,12 +55,12 @@ near account import-account using-private-key <privateKey> network-config testne
 
 ## Rust
 
-The Rust examples are located in the `rust` directory.
+The `near-api-rs` examples are located in the `near-api-rs` directory.
 
 Enter the Rust directory.
 
 ```bash
-cd rust
+cd near-api-rs
 ```
 
 Run the example you want to run (replace `example_name` with the name of the example you want to run):
@@ -69,8 +69,36 @@ Run the example you want to run (replace `example_name` with the name of the exa
 cargo run --example example_name
 ```
 
-Running keystore.rs and credentials-directory.rs requires the user to have saved their credentials to the keychain and legacy key store, respectively, via the NEAR CLI.
+Running keystore.rs and credentials-directory.rs requires the user to have saved their credentials to the keychain and legacy key store, respectively, via the NEAR CLI. The same applies to the `near-kit-rs/examples/signer_options` examples.
 
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
+```
+
+## near-kit (Rust)
+
+The `near-kit` Rust examples are located in the `near-kit-rs` directory.
+
+```bash
+cd near-kit-rs
+cargo run --example example_name
+```
+
+## near-kit (Python)
+
+The `near-kit` Python examples are located in the `near-kit-py` directory. They need Python 3.11+.
+
+```bash
+cd near-kit-py
+pip install near-kit python-dotenv
+python examples/example_name.py
+```
+
+## Testing near-kit examples on a local sandbox
+
+`sandbox/run.sh` starts a NEAR sandbox in Docker, creates the accounts and contracts the examples expect, and runs every `near-kit-rs` and `near-kit-py` example against it (`create_tla` is skipped: it needs the testnet registrar).
+
+```bash
+./sandbox/run.sh          # all
+./sandbox/run.sh rust     # or: python
 ```
