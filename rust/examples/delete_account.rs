@@ -1,6 +1,6 @@
 use dotenv::from_filename;
+use near_api::SecretKey;
 use near_api::{signer, Account, AccountId, NearToken, NetworkConfig, Signer};
-use near_crypto::SecretKey;
 use std::str::FromStr;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -13,7 +13,7 @@ async fn main() {
     let beneficiary_account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let creator_signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let creator_signer = Signer::from_secret_key(private_key).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -35,7 +35,7 @@ async fn main() {
             beneficiary_account_id.clone(),
             NearToken::from_millinear(100),
         )
-        .public_key(delete_account_private_key.public_key()).unwrap()
+        .with_public_key(delete_account_private_key.public_key())
         .with_signer(creator_signer.clone()) // Signer is the account that is creating the new account
         .send_to(&network)
         .await
@@ -46,7 +46,7 @@ async fn main() {
     // Create an account object for the new account
     // and a new signer
     let account_to_delete = Account(delete_account_id.clone());
-    let signer = Signer::new(Signer::from_secret_key(delete_account_private_key)).unwrap();
+    let signer = Signer::from_secret_key(delete_account_private_key).unwrap();
 
     // Delete the account with account Id of the account object
     let delete_account_result = account_to_delete

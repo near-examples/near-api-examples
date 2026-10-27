@@ -1,8 +1,8 @@
 use dotenv::from_filename;
+use near_api::types::transaction::actions::FunctionCallAction;
+use near_api::types::Action;
+use near_api::SecretKey;
 use near_api::{AccountId, NetworkConfig, Signer, Transaction};
-use near_crypto::SecretKey;
-use near_primitives::action::FunctionCallAction;
-use near_primitives::transaction::Action;
 use serde_json::json;
 use std::str::FromStr;
 
@@ -15,7 +15,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let signer = Signer::from_secret_key(private_key).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -28,8 +28,8 @@ async fn main() {
     let action1 = Action::FunctionCall(Box::new(FunctionCallAction {
         method_name: "add_message".to_string(),
         args,
-        gas: 100_000_000_000_000,
-        deposit: 0,
+        gas: near_api::NearGas::from_tgas(100),
+        deposit: near_api::NearToken::from_yoctonear(0),
     }));
     let tx1 = Transaction::construct(
         account_id.clone(),
@@ -40,9 +40,9 @@ async fn main() {
 
     let action2 = Action::FunctionCall(Box::new(FunctionCallAction {
         method_name: "increment".to_string(),
-        args: vec![],
-        gas: 100_000_000_000_000,
-        deposit: 0,
+        args: b"{}".to_vec(),
+        gas: near_api::NearGas::from_tgas(100),
+        deposit: near_api::NearToken::from_yoctonear(0),
     }));
     let tx2 = Transaction::construct(
         account_id.clone(),

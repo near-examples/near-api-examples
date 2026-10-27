@@ -4,7 +4,7 @@ import { parseSeedPhrase } from "near-api-js/seed-phrase";
 import { Account, JsonRpcProvider, KeyPairString } from "near-api-js";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const accountId: string = process.env.ACCOUNT_ID!;
 
 // Create a keystore and add the key pair via a seed phrase

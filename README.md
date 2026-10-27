@@ -4,13 +4,15 @@ This repository contains examples of how to use the NEAR API in both JavaScript 
 
 ## Setup
 
+Use Node.js **22.22.2 or newer** (CI uses Node.js 24). Rust examples use **Rust 1.96**, selected by `rust/rust-toolchain.toml`.
+
 To run the examples, you need to set up the environment variables. In the root of the repository, create a `.env` file with the following variables:
 
 ```.env
-ACCOUNT_ID=near-api-tester.testnet // The account ID to use for the examples
-PRIVATE_KEY=ed25519:5gUStfPd... // The private key for the account
-SEED_PHRASE="goose card december immune flag ..." // The seed phrase for the account
-FASTNEAR_API_KEY=your_api_key_here // (Optional) FastNear RPC API key for authenticated requests
+ACCOUNT_ID=near-api-tester.testnet # The account ID to use for the examples
+PRIVATE_KEY=ed25519:5gUStfPd... # The private key for the account
+SEED_PHRASE="goose card december immune flag ..." # The seed phrase for the account
+FASTNEAR_API_KEY=your_api_key_here # (Optional) FastNear RPC API key for authenticated requests
 ```
 
 These can be created using the [NEAR CLI](https://github.com/near/near-cli-rs)
@@ -36,7 +38,7 @@ Enter the `near-api-js` directory and install the dependencies:
 
 ```bash
 cd near-api-js
-npm install
+npm ci
 ```
 
 Then run the example you want to run (replace `example-name` with the name of the example you want to run):
@@ -52,6 +54,19 @@ Running credentials-directory.js requires the user to have saved their credentia
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
 ```
+
+## near-kit
+
+The equivalent JavaScript examples use near-kit 0.20. From the repository root:
+
+```bash
+cd near-kit
+npm ci
+npm run check
+npm run example-name
+```
+
+Run JavaScript commands from the selected package directory. Both packages load the shared `../.env` described above; the meta-transaction client/server instead use the package-local configuration described in their README. near-kit validates serialized private keys with `parseKey` before configuring the client. Its credential-file example reads the shared `credentials-file.json` from the repository root.
 
 ## Rust
 
@@ -74,3 +89,17 @@ Running keystore.rs and credentials-directory.rs requires the user to have saved
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
 ```
+
+## Checking changes
+
+Typechecking and compiling the examples do not require accounts, credentials, or a running network:
+
+```bash
+(cd near-api-js && npm ci && npm run check)
+(cd near-kit && npm ci && npm run check)
+(cd rust && cargo fmt --all --check && cargo check --locked --examples)
+```
+
+The Rust examples use the key, action, gas and token types re-exported by near-api 0.8.6. The `keystore` feature is enabled for the system-keychain signer example. Committed lockfiles reproduce the dependency sets checked in CI.
+
+Running individual examples is separate from checking them: many examples create accounts, change access keys, deploy contracts or transfer tokens on testnet. Configure their account IDs and credentials before running them.

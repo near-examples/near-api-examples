@@ -3,7 +3,7 @@ import { NEAR } from "near-api-js/tokens";
 import { Account, JsonRpcProvider, KeyPairString } from "near-api-js";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const privateKey: string = process.env.PRIVATE_KEY!;
 const accountId: string = process.env.ACCOUNT_ID!;
 

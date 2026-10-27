@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Fetch the private key from a credentials file
 interface Credentials {

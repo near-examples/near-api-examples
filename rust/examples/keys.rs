@@ -1,7 +1,7 @@
 use dotenv::from_filename;
+use near_api::types::transaction::actions::{AccessKeyPermission, FunctionCallPermission};
+use near_api::SecretKey;
 use near_api::{signer, Account, AccountId, NetworkConfig, Signer};
-use near_crypto::SecretKey;
-use near_primitives::account::{AccessKeyPermission, FunctionCallPermission};
 use std::str::FromStr;
 
 #[tokio::main]
@@ -14,7 +14,7 @@ async fn main() {
     let account = Account(account_id.clone());
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let signer = Signer::from_secret_key(private_key).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -25,7 +25,10 @@ async fn main() {
     // Add full access key
     let new_full_private_key = signer::generate_secret_key().unwrap(); // Get the private key from the keypair
     let add_full_key_result = account
-        .add_key(AccessKeyPermission::FullAccess, new_full_private_key.public_key())
+        .add_key(
+            AccessKeyPermission::FullAccess,
+            new_full_private_key.public_key(),
+        )
         .with_signer(signer.clone())
         .send_to(&network)
         .await
@@ -37,9 +40,9 @@ async fn main() {
 
     // Add function call access key
     let new_function_call_key = AccessKeyPermission::FunctionCall(FunctionCallPermission {
-        allowance: Some(250_000_000_000_000_000_000_000), // Gas allowance key can use to call methods (optional)
+        allowance: Some(near_api::NearToken::from_millinear(250)), // Gas allowance key can use to call methods (optional)
         receiver_id: "example-contract.testnet".to_string(), // Contract this key is allowed to call
-        method_names: vec!["example_method".to_string()], // Methods this key is allowed to call
+        method_names: vec!["example_method".to_string()],    // Methods this key is allowed to call
     });
 
     let new_function_private_key = signer::generate_secret_key().unwrap();
@@ -57,7 +60,7 @@ async fn main() {
     // Delete full access key
     let public_key_to_delete = new_full_public_key;
     let delete_full_key_result = account
-        .delete_key(public_key_to_delete.parse().unwrap())
+        .delete_key(public_key_to_delete.parse::<near_api::PublicKey>().unwrap())
         .with_signer(signer.clone())
         .send_to(&network)
         .await

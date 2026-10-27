@@ -2,7 +2,7 @@ import { Near } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Create a connection to testnet (no signing needed for view operations)
 const near = new Near({ network: "testnet" });

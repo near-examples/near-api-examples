@@ -1,11 +1,12 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near, generateKey } from "near-kit";
 import dotenv from "dotenv";
 import fs from "fs";
 import { createHash } from "crypto";
 
 // Load environment variables
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet with signing capabilities
@@ -50,7 +51,7 @@ console.log("Created consumer account:", consumerAccountId);
 // Consumer uses the global contract by referencing the code hash
 const consumerNear = new Near({
   network: "testnet",
-  privateKey: consumerKey.secretKey,
+  privateKey: privateKeyFromString(consumerKey.secretKey),
   defaultSignerId: consumerAccountId,
 });
 

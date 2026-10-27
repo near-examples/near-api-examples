@@ -1,9 +1,10 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near, generateKey } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet with signing capabilities
@@ -35,7 +36,7 @@ console.log(`Funded account with 0.01 NEAR`);
 // Create a new Near instance with the new account's key to delete it
 const nearForNewAccount = new Near({
   network: "testnet",
-  privateKey: keyPair.secretKey,
+  privateKey: privateKeyFromString(keyPair.secretKey),
   defaultSignerId: accountToDelete,
 });
 

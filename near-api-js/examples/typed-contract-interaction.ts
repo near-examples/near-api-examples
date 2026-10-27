@@ -2,7 +2,7 @@ import { nearToYocto, Account, Contract, JsonRpcProvider, KeyPairString } from "
 import abi from "./guestbook.abi.js";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const accountId: string = process.env.ACCOUNT_ID!;
 

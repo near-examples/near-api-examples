@@ -2,7 +2,7 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "near-kit": "^0.8.2"
+    "near-kit": "^0.20.2"
   },
   "scripts": {
     "account-details": "node examples/account-details.js",
@@ -29,10 +29,14 @@
     "simultaneous-transactions": "node examples/simultaneous-transactions.js",
     "tokens-balance": "node examples/tokens-balance.js",
     "utils": "node examples/utils.js",
-    "verify-signature": "node examples/verify-signature.js"
+    "verify-signature": "node examples/verify-signature.js",
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
     "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.22.2"
   }
 }

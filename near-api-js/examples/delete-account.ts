@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { Account, JsonRpcProvider, KeyPair, KeyPairString, nearToYocto } from "near-api-js";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const accountId: string = process.env.ACCOUNT_ID!;
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const keyPair = KeyPair.fromString(privateKey);

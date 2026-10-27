@@ -8,3 +8,8 @@ package-lock.json
 pnpm-lock.yaml
 .vscode
 .tmp
+
+# Reproduce the dependency sets checked by CI.
+!near-api-js/package-lock.json
+!near-kit/package-lock.json
+!rust/Cargo.lock

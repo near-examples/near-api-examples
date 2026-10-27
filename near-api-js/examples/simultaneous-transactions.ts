@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { NEAR } from "near-api-js/tokens";
 import { Account, actions, JsonRpcProvider, KeyPair, MultiKeySigner, KeyPairString } from "near-api-js";
 
-dotenv.config(); // Loads .env
+dotenv.config({ path: "../.env" }); // Loads .env
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const accountId: string = process.env.ACCOUNT_ID!;
 

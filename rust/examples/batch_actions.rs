@@ -1,8 +1,8 @@
 use dotenv::from_filename;
+use near_api::types::transaction::actions::{FunctionCallAction, TransferAction};
+use near_api::types::Action;
+use near_api::SecretKey;
 use near_api::{AccountId, NetworkConfig, Signer, Transaction};
-use near_crypto::SecretKey;
-use near_primitives::action::{FunctionCallAction, TransferAction};
-use near_primitives::transaction::Action;
 use std::str::FromStr;
 
 #[tokio::main]
@@ -14,7 +14,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let signer = Signer::from_secret_key(private_key).unwrap();
 
     let network = NetworkConfig::testnet();
 
@@ -23,11 +23,11 @@ async fn main() {
     let call_action = Action::FunctionCall(Box::new(FunctionCallAction {
         method_name: "increment".to_string(),
         args: serde_json::json!({}).to_string().into_bytes(),
-        gas: 30_000_000_000_000,
-        deposit: 0,
+        gas: near_api::NearGas::from_tgas(30),
+        deposit: near_api::NearToken::from_yoctonear(0),
     }));
     let transfer_action = Action::Transfer(TransferAction {
-        deposit: 1_000_000_000_000_000_000_000_000,
+        deposit: near_api::NearToken::from_near(1),
     }); // Transfer 1 NEAR
 
     // Send the batch of actions

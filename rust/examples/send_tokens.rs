@@ -1,6 +1,6 @@
 use dotenv::from_filename;
+use near_api::SecretKey;
 use near_api::*;
-use near_crypto::SecretKey;
 use std::str::FromStr;
 
 #[tokio::main]
@@ -13,7 +13,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let signer = Signer::from_secret_key(private_key).unwrap();
 
     // Create a connection to the NEAR testnet
     let network = NetworkConfig::testnet();

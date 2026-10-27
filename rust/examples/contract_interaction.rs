@@ -1,6 +1,6 @@
 use dotenv::from_filename;
+use near_api::SecretKey;
 use near_api::{AccountId, Contract, Data, NearToken, NetworkConfig, Signer};
-use near_crypto::SecretKey;
 use serde_json::json;
 use std::str::FromStr;
 
@@ -14,7 +14,7 @@ async fn main() {
     let account_id: AccountId = account_id_string.parse().unwrap();
 
     let private_key = SecretKey::from_str(&private_key_string).unwrap();
-    let signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let signer = Signer::from_secret_key(private_key).unwrap();
 
     // Create a connection to the NEAR testnet
     let network = NetworkConfig::testnet();
@@ -26,7 +26,6 @@ async fn main() {
     // Make a view call to a contract
     let view_call_result: Data<u32> = contract
         .call_function("total_messages", ())
-        .unwrap()
         .read_only()
         .fetch_from(&network)
         .await
@@ -40,7 +39,6 @@ async fn main() {
 
     let function_call_result = contract
         .call_function("add_message", args)
-        .unwrap()
         .transaction()
         .deposit(NearToken::from_near(1))
         .with_signer(account_id.clone(), signer.clone()) // Signer is the account that is calling the function

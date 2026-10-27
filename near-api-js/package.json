@@ -42,6 +42,10 @@
     "utils": "tsx examples/utils.ts",
     "verify-signature": "tsx examples/verify-signature.ts",
     "meta-tx:server": "tsx examples/meta-tx/server.ts",
-    "meta-tx:client": "tsx examples/meta-tx/client.ts"
+    "meta-tx:client": "tsx examples/meta-tx/client.ts",
+    "check": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=22.22.2"
   }
 }

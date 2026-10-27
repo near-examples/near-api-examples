@@ -1,9 +1,8 @@
 use dotenv::from_filename;
+use near_api::SecretKey;
+use near_api::*;
 use std::str::FromStr;
 use std::time::{SystemTime, UNIX_EPOCH};
-use near_api::*;
-use near_crypto::SecretKey;
-use near_primitives::views::FinalExecutionOutcomeView;
 
 /// Example deploying a contract to the global contract code storage as account-id
 #[tokio::main]
@@ -16,16 +15,17 @@ async fn main() {
 
     let global_account_id: AccountId = account_id_string.parse().unwrap();
     let global_code = std::fs::read("../contracts/contract.wasm").unwrap();
-    let global_signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let global_signer = Signer::from_secret_key(private_key).unwrap();
 
     // Deploy the global contract code using the account ID `nft-contract.testnet`
     // This will deploy the contract to the specified account ID
     // and return the final execution outcome
-    let result: FinalExecutionOutcomeView = Contract::deploy_global_contract_code(global_code)
+    let result = Contract::deploy_global_contract_code(global_code)
         .as_account_id(global_account_id.clone())
         .with_signer(global_signer.clone())
         .send_to_testnet()
-        .await.unwrap();
+        .await
+        .unwrap();
 
     println!("{:?}", result);
 
@@ -47,7 +47,7 @@ async fn main() {
             global_account_id.clone(),
             NearToken::from_millinear(100), // Initial balance for new account in yoctoNEAR
         )
-        .public_key(private_key.public_key()).unwrap()
+        .with_public_key(private_key.public_key())
         .with_signer(global_signer.clone()) // Signer is the account that is creating the new account
         .send_to_testnet()
         .await
@@ -60,14 +60,15 @@ async fn main() {
     //
     // Please note that you have to trust the account-id that you are providing. As the code is mutable, the owner of the referenced account can
     // change the code at any time which might lead to unexpected behavior or malicious activity.
-    let my_signer = Signer::new(Signer::from_secret_key(private_key)).unwrap();
+    let my_signer = Signer::from_secret_key(private_key).unwrap();
 
-    let result: FinalExecutionOutcomeView = Contract::deploy(new_account_id)
+    let result = Contract::deploy(new_account_id)
         .use_global_account_id(global_account_id)
         .without_init_call()
         .with_signer(my_signer)
         .send_to_testnet()
-        .await.unwrap();
+        .await
+        .unwrap();
 
     println!("{:?}", result);
 }
