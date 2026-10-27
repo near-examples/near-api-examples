@@ -10,6 +10,7 @@ To run the examples, you need to set up the environment variables. In the root o
 ACCOUNT_ID=near-api-tester.testnet // The account ID to use for the examples
 PRIVATE_KEY=ed25519:5gUStfPd... // The private key for the account
 SEED_PHRASE="goose card december immune flag ..." // The seed phrase for the account
+FASTNEAR_API_KEY=your_api_key_here // (Optional) FastNear RPC API key for authenticated requests
 ```
 
 These can be created using the [NEAR CLI](https://github.com/near/near-cli-rs)
