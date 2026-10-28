@@ -1,15 +1,20 @@
 .env
 credentials-file.json
 .DS_Store
-rust/target/
-rust/Cargo.lock
+near-api-rs/target/
+near-api-rs/Cargo.lock
 node_modules/
 package-lock.json
 pnpm-lock.yaml
 .vscode
 .tmp
+near-kit-rs/target/
+near-kit-rs/Cargo.lock
+near-kit-py/.venv/
+__pycache__/
 
 # Reproduce the dependency sets checked by CI.
 !near-api-js/package-lock.json
 !near-kit/package-lock.json
-!rust/Cargo.lock
+!near-api-rs/Cargo.lock
+!near-kit-rs/Cargo.lock
