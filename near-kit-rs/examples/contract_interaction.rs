@@ -8,7 +8,9 @@ async fn main() -> Result<(), Error> {
     let account_id = std::env::var("ACCOUNT_ID").expect("ACCOUNT_ID");
 
     // Create a connection to testnet with signing capabilities
-    let near = Near::testnet().credentials(&private_key, &account_id)?.build();
+    let near = Near::testnet()
+        .credentials(&private_key, &account_id)?
+        .build();
 
     // Read-only calls do not need a signer
     let total: u32 = near

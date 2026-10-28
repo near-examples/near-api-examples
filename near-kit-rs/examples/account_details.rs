@@ -9,7 +9,10 @@ async fn main() -> Result<(), Error> {
     // Get the account balance
     let balance = near.balance(account_id).await?;
     println!("Account: {account_id}");
-    println!("Available: {}, staked: {}", balance.available, balance.locked);
+    println!(
+        "Available: {}, staked: {}",
+        balance.available, balance.locked
+    );
 
     // Get the account state: code hash and storage usage
     let account = near.account(account_id).await?;

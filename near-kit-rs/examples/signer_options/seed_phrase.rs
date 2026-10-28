@@ -12,7 +12,8 @@ async fn main() -> Result<(), Error> {
     let near = Near::testnet().signer(signer).build();
 
     // Test the signer by transferring NEAR
-    near.transfer("receiver-account.testnet", NearToken::from_near(1)).await?;
+    near.transfer("receiver-account.testnet", NearToken::from_near(1))
+        .await?;
 
     Ok(())
 }

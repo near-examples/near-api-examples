@@ -1,12 +1,13 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near } from "near-kit";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Create a connection to testnet with credentials from environment
 const near = new Near({
   network: "testnet",
-  privateKey: process.env.PRIVATE_KEY,
+  privateKey: privateKeyFromString(process.env.PRIVATE_KEY),
   defaultSignerId: process.env.ACCOUNT_ID
 });
 

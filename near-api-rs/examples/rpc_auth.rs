@@ -6,8 +6,9 @@ async fn main() {
     dotenv::from_filename("../.env").ok();
 
     // Replace with your own API key, or set FASTNEAR_API_KEY in .env
-    let api_key = std::env::var("FASTNEAR_API_KEY")
-        .unwrap_or_else(|_| "1111111111111111111111111111111111111111111111111111111111111111".to_string());
+    let api_key = std::env::var("FASTNEAR_API_KEY").unwrap_or_else(|_| {
+        "1111111111111111111111111111111111111111111111111111111111111111".to_string()
+    });
 
     // Authenticate via query parameter appended to the RPC URL
     let rpc_url = format!("https://rpc.mainnet.fastnear.com?apiKey={}", api_key);

@@ -1,10 +1,11 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near } from "near-kit";
 import dotenv from "dotenv";
 import fs from "fs";
 
 // Load environment variables
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet with signing capabilities

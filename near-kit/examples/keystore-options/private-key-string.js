@@ -1,13 +1,14 @@
+import { privateKeyFromString } from "../helpers/private-key.js";
 import { Near } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Create Near client with private key directly from environment
 const near = new Near({
   network: "testnet",
-  privateKey: process.env.PRIVATE_KEY, // ed25519:5Fg2...
+  privateKey: privateKeyFromString(process.env.PRIVATE_KEY), // ed25519:5Fg2...
   defaultSignerId: process.env.ACCOUNT_ID, // example-account.testnet
 });
 

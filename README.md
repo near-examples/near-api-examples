@@ -4,13 +4,15 @@ This repository contains examples of how to use the NEAR API in JavaScript, Rust
 
 ## Setup
 
+Use Node.js **22.22.2 or newer** (CI uses Node.js 24). Rust examples use **Rust 1.96**, selected by the toolchain files in `near-api-rs/` and `near-kit-rs/`.
+
 To run the examples, you need to set up the environment variables. In the root of the repository, create a `.env` file with the following variables:
 
 ```.env
-ACCOUNT_ID=near-api-tester.testnet // The account ID to use for the examples
-PRIVATE_KEY=ed25519:5gUStfPd... // The private key for the account
-SEED_PHRASE="goose card december immune flag ..." // The seed phrase for the account
-FASTNEAR_API_KEY=your_api_key_here // (Optional) FastNear RPC API key for authenticated requests
+ACCOUNT_ID=near-api-tester.testnet # The account ID to use for the examples
+PRIVATE_KEY=ed25519:5gUStfPd... # The private key for the account
+SEED_PHRASE="goose card december immune flag ..." # The seed phrase for the account
+FASTNEAR_API_KEY=your_api_key_here # (Optional) FastNear RPC API key for authenticated requests
 ```
 
 These can be created using the [NEAR CLI](https://github.com/near/near-cli-rs)
@@ -36,7 +38,7 @@ Enter the `near-api-js` directory and install the dependencies:
 
 ```bash
 cd near-api-js
-npm install
+npm ci
 ```
 
 Then run the example you want to run (replace `example-name` with the name of the example you want to run):
@@ -52,6 +54,19 @@ Running credentials-directory.js requires the user to have saved their credentia
 ```bash
 near account import-account using-private-key <privateKey> network-config testnet
 ```
+
+## near-kit
+
+The equivalent JavaScript examples use near-kit 0.20. From the repository root:
+
+```bash
+cd near-kit
+npm ci
+npm run check
+npm run example-name
+```
+
+Run JavaScript commands from the selected package directory. Both packages load the shared `../.env` described above; the meta-transaction client/server instead use the package-local configuration described in their README. near-kit validates serialized private keys with `parseKey` before configuring the client. Its credential-file example reads the shared `credentials-file.json` from the repository root.
 
 ## Rust
 
@@ -86,19 +101,26 @@ cargo run --example example_name
 
 ## near-kit (Python)
 
-The `near-kit` Python examples are located in the `near-kit-py` directory. They need Python 3.11+.
+The `near-kit` Python examples are located in the `near-kit-py` directory. They need Python 3.11+ and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ```bash
 cd near-kit-py
-pip install near-kit python-dotenv
-python examples/example_name.py
+uv sync --frozen
+uv run --frozen python examples/example_name.py
 ```
 
-## Testing near-kit examples on a local sandbox
+## Checking changes
 
-`sandbox/run.sh` starts a NEAR sandbox in Docker, creates the accounts and contracts the examples expect, and runs every `near-kit-rs` and `near-kit-py` example against it (`create_tla` is skipped: it needs the testnet registrar).
+Typechecking and compiling the examples do not require accounts, credentials, or a running network:
 
 ```bash
-./sandbox/run.sh          # all
-./sandbox/run.sh rust     # or: python
+(cd near-api-js && npm ci && npm run check)
+(cd near-kit && npm ci && npm run check)
+(cd near-api-rs && cargo fmt --all --check && cargo check --locked --examples)
+(cd near-kit-rs && cargo fmt --all --check && cargo check --locked --examples)
+(cd near-kit-py && uv sync --frozen && uv run --frozen python -m compileall -q examples)
 ```
+
+The `near-api-rs` examples use the key, action, gas and token types re-exported by near-api 0.8.6. The `near-kit-rs` examples use near-kit 0.19. The `keystore` feature is enabled for the system-keychain signer example. Committed lockfiles reproduce the dependency sets checked in CI.
+
+Running individual examples is separate from checking them: many examples create accounts, change access keys, deploy contracts or transfer tokens on testnet. Configure their account IDs and credentials before running them.

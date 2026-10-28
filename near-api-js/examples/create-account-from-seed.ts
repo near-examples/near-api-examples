@@ -3,7 +3,7 @@ import type { KeyPairString } from "near-api-js";
 import { generateSeedPhrase } from "near-api-js/seed-phrase";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const accountId: string = process.env.ACCOUNT_ID!;
 

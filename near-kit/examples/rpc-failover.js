@@ -1,9 +1,10 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 // near-kit has built-in retry logic for RPC requests
@@ -14,7 +15,6 @@ const near = new Near({
   retryConfig: {
     maxRetries: 5,
     initialDelayMs: 500,
-    maxDelayMs: 5000,
   },
   privateKey: privateKey, // ed25519:5Fg2...
   defaultSignerId: accountId, // example-account.testnet

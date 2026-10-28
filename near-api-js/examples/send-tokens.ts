@@ -4,7 +4,7 @@ import { NEAR, FungibleToken } from "near-api-js/tokens";
 import { USDT } from "near-api-js/tokens/testnet";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const accountId: string = process.env.ACCOUNT_ID!;
 

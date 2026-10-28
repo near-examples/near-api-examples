@@ -1,9 +1,10 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import { Near, generateKey } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 // Create a connection to testnet with signing capabilities
@@ -44,7 +45,7 @@ console.log(`Added Function Call Key: ${functionCallKey.publicKey.toString()}`);
 // Use the new Full Access Key to delete the Function Call Key
 const nearWithNewKey = new Near({
   network: "testnet",
-  privateKey: fullAccessKey.secretKey,
+  privateKey: privateKeyFromString(fullAccessKey.secretKey),
   defaultSignerId: accountId,
 });
 

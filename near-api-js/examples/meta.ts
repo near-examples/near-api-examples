@@ -33,7 +33,7 @@ try {
 }
 
 // Load credentials for an account that exists
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const privateKey = process.env.PRIVATE_KEY! as KeyPairString;
 const accountId: string = process.env.ACCOUNT_ID!;
 

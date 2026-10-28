@@ -1,9 +1,10 @@
+import { privateKeyFromString } from "./helpers/private-key.js";
 import dotenv from "dotenv";
 import { Near } from "near-kit";
 
 // Create a connection to testnet with credentials
-dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
+dotenv.config({ path: "../.env" });
+const privateKey = privateKeyFromString(process.env.PRIVATE_KEY);
 const accountId = process.env.ACCOUNT_ID;
 
 const near = new Near({

@@ -1,8 +1,9 @@
+import { privateKeyFromString } from "../helpers/private-key.js";
 import { Near, parseSeedPhrase } from "near-kit";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Parse seed phrase to get key pair
 const keyPair = parseSeedPhrase(process.env.SEED_PHRASE);
@@ -10,7 +11,7 @@ const keyPair = parseSeedPhrase(process.env.SEED_PHRASE);
 // Create Near client with the derived private key
 const near = new Near({
   network: "testnet",
-  privateKey: keyPair.secretKey,
+  privateKey: privateKeyFromString(keyPair.secretKey),
   defaultSignerId: process.env.ACCOUNT_ID, // example-account.testnet
 });
 

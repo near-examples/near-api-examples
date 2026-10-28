@@ -1,7 +1,7 @@
 import { JsonRpcProvider } from "near-api-js";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 // Replace with your own API key, or set FASTNEAR_API_KEY in .env
 const apiKey = process.env.FASTNEAR_API_KEY || "1111111111111111111111111111111111111111111111111111111111111111";
 

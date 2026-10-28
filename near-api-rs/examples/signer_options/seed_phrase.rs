@@ -8,8 +8,7 @@ async fn main() {
     let account_id_string = std::env::var("ACCOUNT_ID").unwrap();
 
     // Create a signer from a seed phrase
-    let seed_phrase = Signer::from_seed_phrase(&seed_phrase_string, None).unwrap(); // "royal success river ..."
-    let signer = Signer::new(seed_phrase).unwrap(); // Create the signer
+    let signer = Signer::from_seed_phrase(&seed_phrase_string, None).unwrap();
 
     let network = NetworkConfig::testnet();
 

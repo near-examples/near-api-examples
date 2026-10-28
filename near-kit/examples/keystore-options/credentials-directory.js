@@ -5,7 +5,7 @@ import { homedir } from "os";
 import path from "path";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 // Create a FileKeyStore that reads from ~/.near-credentials
 const credentialsPath = path.join(homedir(), ".near-credentials");

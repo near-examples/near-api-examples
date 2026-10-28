@@ -11,7 +11,9 @@ async fn main() -> Result<(), Error> {
     let account_id = std::env::var("ACCOUNT_ID").expect("ACCOUNT_ID");
 
     // Create a connection to testnet with signing capabilities
-    let near = Near::testnet().credentials(&private_key, &account_id)?.build();
+    let near = Near::testnet()
+        .credentials(&private_key, &account_id)?
+        .build();
 
     // Read the contract WASM and compute its code hash
     let wasm_code = std::fs::read("../contracts/contract.wasm").expect("contract.wasm");
@@ -23,7 +25,10 @@ async fn main() -> Result<(), Error> {
         .send()
         .wait_until::<Final>()
         .await?;
-    println!("Published global contract by hash: {:?}", outcome.transaction_hash());
+    println!(
+        "Published global contract by hash: {:?}",
+        outcome.transaction_hash()
+    );
 
     // Create a consumer account
     let consumer_key = SecretKey::generate_ed25519();
