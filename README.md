@@ -117,6 +117,18 @@ From `near-kit-rs`, run `cargo run --locked --example verify_signature`. From `n
 
 In a web application, get the signed response from the wallet's `signMessage` method instead of signing on the verification service. Verify against the original challenge stored by the service, including the message, recipient, and nonce, and reject reused challenges. The examples use `generate_nonce`, whose timestamp is checked by near-kit. They use no callback URL; if your challenge includes one, include it in verification too.
 
+## Post-quantum keys (ML-DSA-65)
+
+Runnable examples are available in [JavaScript](near-kit/examples/post-quantum-keys.js), [Rust](near-kit-rs/examples/post_quantum_keys.rs), and [Python](near-kit-py/examples/post_quantum_keys.py). Each uses the existing full-access key from `ACCOUNT_ID` and `PRIVATE_KEY` in the shared `.env` to register a temporary ML-DSA-65 full-access key on testnet, waits for registration to finalize, then uses it to sign a self-transfer. The original signer removes the temporary key afterward, including when the self-transfer fails.
+
+Run from the corresponding package directory:
+
+- JavaScript (`near-kit`): `npm run post-quantum-keys`
+- Rust (`near-kit-rs`): `cargo run --locked --example post_quantum_keys`
+- Python (`near-kit-py`): `uv run --frozen python examples/post_quantum_keys.py`
+
+Running these examples submits transactions and pays testnet gas and temporary key storage costs. The post-quantum private key stays in memory and is not printed or saved. On-chain key listings represent ML-DSA-65 keys by their `ml-dsa-65-hash:` handles; these identify registered keys and are not full public keys for signing or registration.
+
 ## Checking changes
 
 Typechecking and compiling the examples do not require accounts, credentials, or a running network:
