@@ -109,6 +109,14 @@ uv sync --frozen
 uv run --frozen python examples/example_name.py
 ```
 
+## NEP-413 signature verification
+
+The [Rust](near-kit-rs/examples/verify_signature.rs) and [Python](near-kit-py/examples/verify_signature.py) examples sign a message locally, then verify the signature and that its key has full-access permission on the claimed testnet account. Set `ACCOUNT_ID` and `PRIVATE_KEY` in the shared `.env` to an existing testnet account and one of its full-access ed25519 keys. These examples only sign off-chain messages and read account keys; they do not submit transactions.
+
+From `near-kit-rs`, run `cargo run --locked --example verify_signature`. From `near-kit-py`, run `uv run --frozen python examples/verify_signature.py`.
+
+In a web application, get the signed response from the wallet's `signMessage` method instead of signing on the verification service. Verify against the original challenge stored by the service, including the message, recipient, and nonce, and reject reused challenges. The examples use `generate_nonce`, whose timestamp is checked by near-kit. They use no callback URL; if your challenge includes one, include it in verification too.
+
 ## Checking changes
 
 Typechecking and compiling the examples do not require accounts, credentials, or a running network:
